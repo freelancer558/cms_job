@@ -32,10 +32,12 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('home.index');
-});
+// Route::get('/', function()
+// {
+// 	return View::make('home.index');
+// });
+
+Route::get('/', 'home@index');
 
 /*
 |--------------------------------------------------------------------------
@@ -109,3 +111,12 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login');
 });
+
+// Route for Users_Controller
+Route::controller('users');
+
+// Route for Users_Controller
+Route::controller('users');
+
+// Route for Dashboards_Controller
+Route::controller('dashboards');
