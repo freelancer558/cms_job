@@ -32,7 +32,7 @@ class Create_Repairs_Table {
 	 */
 	public function down()
 	{
-		Schema::drop('repaires');
+		Schema::drop('repairs');
 	}
 
 }

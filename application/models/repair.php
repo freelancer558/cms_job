@@ -1,5 +1,9 @@
 <?php
+
 class Repair extends Eloquent {	
+
+	public static $timestamps = true;
+	
 	public function products()
 	{
 		return $this->has_many('Product');
@@ -9,4 +13,5 @@ class Repair extends Eloquent {
 	{
 		return $this->has_one('Status_Repair')
 	}
+
 }

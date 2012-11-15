@@ -14,9 +14,6 @@ class Create_Requirements_Table {
 			$table->engine = 'InnoDB';
 	    $table->increments('id');
 	    $table->date('date');
-	   	
-	   	$table->integer('chemical_id')->unsigned();
-	    $table->foreign('chemical_id')->references('id')->on('chemicals')->on_delete('restrict');
 
 	    $table->timestamps();	
 		});
