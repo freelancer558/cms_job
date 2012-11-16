@@ -215,6 +215,7 @@ return array(
 		'Typeahead'             => 'Bootstrapper\\Typeahead',
 
 		'Routely' 		=> 'Flare\\Routely',
+		'Formly' 			=> 'Flare\\Formly',
 	),
 
 );

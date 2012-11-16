@@ -46,5 +46,12 @@ return array(
     'location' => 'path: ' . $paths['bundle'] . '/sentry',
     'auto'     => true,
 	),
+	'formly' => array(
+    'autoloads' => array(
+      'map' => array(
+        'Flare\\Formly' => '(:bundle)/formly.php',
+      ),
+    ),
+	),
 		
 );
