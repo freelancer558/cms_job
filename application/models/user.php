@@ -3,11 +3,6 @@
 class User extends ActiveRecord\Model {
 
 	public static $timestamps = true;
-	
-	public function role()
-	{
-		return $this->has_one('Role');
-	}
 
 	public function repairs()
 	{

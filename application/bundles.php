@@ -42,5 +42,9 @@ return array(
     'auto' => true,
 	),
 	'activerecord' => array('auto' => true),
+	'sentry' => array(
+    'location' => 'path: ' . $paths['bundle'] . '/sentry',
+    'auto'     => true,
+	),
 		
 );
