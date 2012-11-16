@@ -37,7 +37,12 @@
 // 	return View::make('home.index');
 // });
 
-Route::get('/', 'home@index');
+// Documents
+// http://bundles.laravel.com/bundle/routely
+// Start the bundle if its not auto-started
+Bundle::start('routely');
+
+Route::get('/', array( 'as' => 'root', 'uses' => 'home@index'));
 
 /*
 |--------------------------------------------------------------------------
@@ -111,12 +116,3 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login');
 });
-
-// Route for Users_Controller
-Route::controller('users');
-
-// Route for Users_Controller
-Route::controller('users');
-
-// Route for Dashboards_Controller
-Route::controller('dashboards');
