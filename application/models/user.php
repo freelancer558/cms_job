@@ -1,6 +1,6 @@
-<?php namespace AdminModels; 
+<?php 
 
-class User extends \Eloquent {
+class User extends Eloquent {
 
 	public static $timestamps = true;
 	

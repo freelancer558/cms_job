@@ -37,5 +37,6 @@ return array(
 
 	'bootstrapper' => array('auto' => true),
 	'bob',
+	'console' => array('handles' => 'console'),
 		
 );
