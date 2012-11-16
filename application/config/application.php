@@ -213,6 +213,8 @@ return array(
 		'SplitDropdownButton'   => 'Bootstrapper\\SplitDropdownButton',
 		'Tabbable'              => 'Bootstrapper\\Tabbable',
 		'Typeahead'             => 'Bootstrapper\\Typeahead',
+
+		'Routely' 		=> 'Flare\\Routely',
 	),
 
 );
