@@ -1,6 +1,6 @@
 <?php 
 
-class User extends Eloquent {
+class User extends ActiveRecord\Model {
 
 	public static $timestamps = true;
 	

@@ -40,6 +40,7 @@ return array(
 	'console' => array('handles' => 'console'),
 	'routely' => array(
     'auto' => true,
-	)
+	),
+	'activerecord' => array('auto' => true),
 		
 );

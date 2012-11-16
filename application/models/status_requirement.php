@@ -1,6 +1,6 @@
 <?php
 
-class Status_Requirement extends Eloquent {
+class Status_Requirement extends ActiveRecord\Model {
 
 	public static $timestamps = true;
 

@@ -1,6 +1,6 @@
 <?php
 
-class Product extends Eloquent {
+class Product extends ActiveRecord\Model {
 
 	public static $timestamps = true;
 

@@ -1,6 +1,6 @@
 <?php
 
-class Chemical extends Eloquent {
+class Chemical extends ActiveRecord\Model {
 
 	public static $timestamps = true;
 	
