@@ -1,12 +1,12 @@
 <?php
 
-class Chemical extends ActiveRecord\Model {
+class Chemical extends Appmodel {
 
 	public static $timestamps = true;
 	
-	public function chemical_type()
+	public function chemical_types()
 	{
-		return $this->has_one('Chemical_Type');
+		return $this->has_many_and_belongs_to('Chemical_Type');
 	}
 	
 	public function requirements()

@@ -1,12 +1,12 @@
 <?php
 
-class Chemical_Type extends ActiveRecord\Model {
+class Chemical_Type extends Appmodel {
 
 	public static $timestamps = true;
 
-	public function chemical()
+	public function chemicals()
 	{
-		return $this->belongs_to('Chemical');
+		return $this->has_many_and_belongs_to('Chemical');
 	}
 
 }

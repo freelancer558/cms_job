@@ -1,6 +1,6 @@
 <?php
 
-class Status_Repair extends ActiveRecord\Model {
+class Status_Repair extends Appmodel {
 
 	public static $timestamps = true;
 

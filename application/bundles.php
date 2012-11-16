@@ -53,5 +53,9 @@ return array(
       ),
     ),
 	),
+	"lara_admin" =>array(
+    'handles'=> 'lara_admin',
+    'auto' => true
+  ),
 		
 );
