@@ -41,9 +41,8 @@
 // http://bundles.laravel.com/bundle/routely
 // Start the bundle if its not auto-started
 Bundle::start('routely');
-
-Route::get('/', array( 'as' => 'root', 'uses' => 'home@index'));
-
+Route::get('/dashboard/users', 'users@index');
+Route::controller(Controller::detect());
 /*
 |--------------------------------------------------------------------------
 | Application 404 & 500 Error Handlers
@@ -114,5 +113,16 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+	if (Auth::guest()) return Redirect::to('home');
 });
+
+Route::filter('nonauth', function()
+{
+	if (Auth::guest() == false) return Redirect::to('dashboard');
+});
+
+// Route for Chemicals_Controller
+Route::controller('chemicals');
+
+// Route for Chemicals_Controller
+Route::controller('chemicals');

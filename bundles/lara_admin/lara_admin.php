@@ -9,7 +9,7 @@ class LaraAdmin
 		Config::set(
 			'laraAdmin.models',
 			array(
-				"User", "Rule", "Group", "Chemical", "Product"
+				"User", "Rule", "Group", "Chemical", "ChemicalType", "Product"
 			)
 		);
 		Config::set('laraAdmin.title', "Lara Admin");

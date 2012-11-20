@@ -1,6 +1,6 @@
 <?php
 
-class Appmodel extends ActiveRecord\Model
+class Appmodel extends \Eloquent
 {
 	
 }

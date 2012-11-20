@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -57,5 +58,5 @@ return array(
     'handles'=> 'lara_admin',
     'auto' => true
   ),
-		
+
 );

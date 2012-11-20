@@ -6,10 +6,11 @@ class lara_admin_models_controller extends Lara_admin_Controller
 	{
 		parent::__construct();
 		$this->filter('before', 'validate_admin');
+		// $this->filter('after', 'check_associations')->only('create');
 	}
 
 	public function action_index($modelName)
-	{
+	{		
 		$model = $this->getClassObject($modelName);
 		$columnModel = $model::first();
 		Input::flash();
@@ -96,6 +97,7 @@ class lara_admin_models_controller extends Lara_admin_Controller
 		}
 
 		$model = $this->uploadFiles($model, $modelName);
+		return strtolower($modelName);
 		$model->save();
 
 		return Redirect::to("/lara_admin/models/$modelName");
@@ -178,7 +180,7 @@ class lara_admin_models_controller extends Lara_admin_Controller
 	public function addConditions($model, $modelName)
 	{
 		if (Input::get($modelName) != null) {
-			foreach (Input::get($modelName) as $key => $value) {
+			foreach (Sentry::user()->all() as $key => $value) {
 				if (!empty($value) && preg_match("/(_gte|_lte)/", $key) === false) {
 					$model = $model->where($key, "like", "%$value%");
 				} elseif (!empty($value) && preg_match("/(_gte|_lte)/", $key)) {

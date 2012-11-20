@@ -14,4 +14,9 @@ class Chemical extends Appmodel {
 		return $this->has_many_and_belongs_to('Requirement');
 	}
 
+	public function photos()
+  {
+    return $this->has_many('Photo');
+  }
+  
 }

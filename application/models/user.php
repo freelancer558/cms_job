@@ -14,4 +14,13 @@ class User extends Appmodel {
 		return $this->has_many('Requirement');
 	}
 
+	public function users_metadata()
+	{
+		return $this->has_one('UsersMetadata');
+	}
+	
+	public function photos()
+	{
+		return $this->has_one('Photo');
+	}
 }

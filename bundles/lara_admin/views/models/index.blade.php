@@ -9,8 +9,12 @@
 								<thead>
 									<tr>
 										@foreach ($columns as $column)
-											<th class="sortable @if ($column->key==$sort_options["column_order"]){{ "sorted-".$sort_options["sort_direction"] }}@endif">
+											<th class="{{(strpos($column->key, ".")+0) ? "": "sortable"}} @if ($column->key==$sort_options["column_order"]){{ "sorted-".$sort_options["sort_direction"] }}@endif">
+												@if (strpos($column->key, ".")+0)
+												{{ $column->title }}
+												@else
 												<a href="{{ $request_uri }}&order={{$column->key}}_{{$sort_options["sort_invert"]}}">{{ $column->title }}</a>
+												@endif
 											</th>
 										@endforeach
 										<th></th>
@@ -19,10 +23,22 @@
 								<tbody>
 									@foreach ( $models->results as  $key => $model)
 										<tr class="@if( ($key % 2)==1 ) {{"even"}} @else {{"odd"}} @endif" >
-											@foreach ($columns as $column)
-												<?php $key= $column->key ?>
-												<td>{{ DataHelper::get($model, $key, "index") }} </td>
-											@endforeach
+											@if ($modelName == "User")
+												<?php 
+													$id = $columns[0]->key;
+													$user_id = $model->$id;
+													$user = Sentry::user((int)$user_id);
+												?>
+												@foreach ($columns as $column)
+													<?php $key= $column->key ?>
+													<td>{{ $user->get($key) }} </td>
+												@endforeach
+											@else
+												@foreach ($columns as $column)
+													<?php $key= $column->key ?>
+													<td>{{ DataHelper::get($model, $key, "index") }} </td>
+												@endforeach
+											@endif
 											<td>
 												{{ HTML::link("lara_admin/models/$modelName/$model->id/edit", "Edit" ) }}
 												{{ HTML::link("lara_admin/models/$modelName/$model->id", "Show" ) }}
