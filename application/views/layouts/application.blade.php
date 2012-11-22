@@ -22,7 +22,7 @@
           <div class="nav-collapse">
               <ul class="nav">
                   @section('navigation')
-                  <li class="active"><a href="home">Home</a></li>
+                  <li class="active"><a href="/home">Home</a></li>
                   @yield_section
               </ul>
           </div><!--/.nav-collapse -->
@@ -51,12 +51,12 @@
 
     @section('form_modals')
     {{--
-    @if (Auth::check())
+    @if (Sentry::check())
       @include('shared.upload_modal')
     @endif
     --}}
-    @if(isset($user))
-      @include('shared.import_user_modal')
+    @if(Sentry::check() && Request::route()->controller == 'user')
+      @include('shared.new_user_modal')
     @endif
     @yield_section
   </body>

@@ -42,6 +42,9 @@
 // Start the bundle if its not auto-started
 Bundle::start('routely');
 Route::get('/dashboard/users', 'users@index');
+Route::get('/about', 'home@about');
+Route::get('/users/(:num)', 'users@show');
+Route::get('/users/(:num)/edit', 'users@edit');
 Route::controller(Controller::detect());
 /*
 |--------------------------------------------------------------------------
@@ -113,16 +116,10 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('home');
+	if (Sentry::check()) return Redirect::to('dashboard');
 });
 
 Route::filter('nonauth', function()
 {
-	if (Auth::guest() == false) return Redirect::to('dashboard');
+	if (Sentry::check() == false) return Redirect::to('home');
 });
-
-// Route for Chemicals_Controller
-Route::controller('chemicals');
-
-// Route for Chemicals_Controller
-Route::controller('chemicals');

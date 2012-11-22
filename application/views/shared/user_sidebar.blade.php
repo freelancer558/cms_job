@@ -3,6 +3,6 @@
   <ul class="nav nav-list">
     <li class="nav-header"><a href="#">Chemicals</a></li>
     <li class="nav-header"><a href="#">Products</a></li>
-    <li class="nav-header"><a href="dashboard/users">Users</a></li>
+    <li class="nav-header">{{HTML::link('/dashboard/users', 'Users')}}</li>
   </ul>
 </div>

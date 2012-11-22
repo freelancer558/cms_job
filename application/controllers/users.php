@@ -3,22 +3,62 @@
 class Users_Controller extends Base_Controller
 {
   var $layout = "layouts.application";
-
-  public function action_index()
+  public $restful = true;
+  public function get_index()
   {
     $users = User::all();
+
     return View::make('users.index', array('users' => $users));
   }
+  public function get_show()
+  {
+    $params = Request::route()->parameters;
+    $user = Sentry::user((int)$params[0]);
+    return View::make('users.show', array('user' => $user));
+  }
+  public function get_new()
+  {
+    $user = new User();
 
-  public function action_authenticate()
+    $form = Formly::make($user);
+    $form->form_class = 'form-horizontal';
+    $form->auto_token = false;
+
+    $g = [];
+    foreach(Sentry::group()->all() as $group => $value){
+      $g[$value['id']] = $value['name'];
+    }
+    return View::make('users.new', array('user' => $user, 'group' => $g))->with('form', $form);
+  }
+
+  public function get_edit()
+  {
+    $params = Request::route()->parameters;
+    $user = Sentry::user((int)$params[0]);
+
+    $form = Formly::make($user);
+    $form->form_class = 'form-horizontal';
+    $form->auto_token = false;
+
+    $g = [];
+    foreach(Sentry::group()->all() as $group => $value){
+      $g[$value['id']] = $value['name'];
+    }
+    return View::make('users.edit', array('user' => $user, 'group' => $g))->with('form', $form);
+  }
+  public function post_authenticate()
   {
     $email = Input::get('email');
     $password = md5('codeponpon' . Input::get('password'));
     $new_user = Input::get('new_user', 'off');
     
     $input = array(
-        'email' => $email,
-        'password' => $password
+      'email' => $email,
+      'password' => $password,
+      'metadata' => array(
+        'first_name' => '',
+        'last_name'  => '',
+      ),
     );
     
     if( $new_user == 'on' ) {
@@ -33,18 +73,24 @@ class Users_Controller extends Base_Controller
         if( $validation->fails() ) {
             return Redirect::to('home')->with_errors($validation);
         }
-        
-        try {
-            $user = new User();
-            $user->email = $email;
-            $user->password = Hash::make($password);
-            $user->save();
-            Auth::login($user);
-        
-            return Redirect::to('dashboard');
-        }  catch( Exception $e ) {
-            Session::flash('status_error', 'An error occurred while creating a new account - please try again.');
-            return Redirect::to('home');
+        try
+        {
+          // create the user
+          $user = Sentry::user()->create($input);
+          $user = Sentry::user($user);
+          try{
+            $user->add_to_group('superuser');
+          }
+          catch (Sentry\SentryException $e)
+          {
+            return Redirect::to('home')->with_errors($e->getMessage());
+          }
+
+          return Redirect::to('home');
+        }
+        catch (Sentry\SentryException $e)
+        {
+          return Redirect::to('home')->with_errors($e->getMessage());
         }
     } else {
     
@@ -56,37 +102,79 @@ class Users_Controller extends Base_Controller
         $validation = Validator::make($input, $rules);
         
         if( $validation->fails() ) {
-            return Redirect::to('home')->with_errors($validation);
+          return Redirect::to('home')->with_errors($validation);
         }
         
         $credentials = array(
             'username' => $email,
             'password' => $password
         );
-        if( Auth::attempt($credentials)) {
+        // try to log a user in
+        try
+        {
+          // log the user in
+          $valid_login = Sentry::login($credentials['username'], $credentials['password'], true);
+          if ($valid_login)
+          {
             return Redirect::to('dashboard');
-        } else {
+          }
+          else
+          {
             Session::flash('status_error', 'Your email or password is invalid - please try again.');
             return Redirect::to('home');
+          }
+        }
+        catch (Sentry\SentryException $e)
+        {
+          return Redirect::to('home')->with_errors($validation);
         }
     }
   }
   
-  public function action_logout()
+  public function get_logout()
   {
-    Auth::logout();
+    Sentry::logout();
     return Redirect::to('home');
   }
 
-  public function action_create()
+  public function post_new()
   {
-      $logged_in_user   = Auth::user();
-      $inputs           = Input::all();
-      $user             = array(
-        "email" => $inputs["email"],
-        
-      );
-      $metadata         = array();
-      $photo            = array();
+    $params           = Input::all();
+    // return print_r($params);
+    $inputs           = array(
+      'email'     => $params["email"],
+      'password'  => $params['password'],
+      'activated'  => 1,
+      'metadata'  => array(
+        'student_code'  => $params['metadata_student_code'],
+        'first_name'    => $params['metadata_first_name'],
+        'last_name'     => $params['metadata_last_name'],
+        'address'       => $params['metadata_address'],
+        'sex_type'      => $params['metadata_sex_type'],
+        'telephone'     => $params['metadata_telephone'],
+      ),
+    );
+    // return print_r($inputs);
+    // $rules = array(
+    //   'email' => 'required|email|exists:users',
+    //   'password' => 'required|confirmed',
+    // );
+    // $validation = Validator::make($inputs, $rules);
+    // if( $validation->fails() ) {
+    //   return Redirect::to('users/new')->with_errors($validation);
+    // }
+    try
+    {
+      // create the user
+      $user = Sentry::user()->register($inputs);
+      Sentry::user($user["id"])->add_to_group($params['group']);
+    
+      return Redirect::to('users/index');
+    }
+    catch (Sentry\SentryException $e)
+    {
+      return $e->getMessage();
+    }
   }
+
 }

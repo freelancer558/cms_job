@@ -14,8 +14,8 @@
         			<th>Student Code</th>
         			<th>First Name</th>
         			<th>Last Name</th>
-        			<th>Sex</th>
-        			<th>Telephone</th>
+                    <th>Telephone</th>
+        			<th></th>
         		</thead>
         		<tbody>
 	        	@forelse($users as $user)
@@ -25,10 +25,11 @@
 		        		<td>{{$user->users_metadata->student_code}}</td>
 		        		<td>{{$user->users_metadata->first_name}}</td>
 		        		<td>{{$user->users_metadata->last_name}}</td>
-		        		<td>{{$user->users_group->sex_type ? "F" : "M"}}</td>
 		        		<td>{{$user->users_metadata->telephone}}</td>
-		        	@else
-		        		<td colspan="5"></td>
+                        <td>{{ HTML::link('users/'.$user->id, 'More...') }}</td>
+                    @else
+                        <td colspan="4"></td>
+                        <td>{{ HTML::link('users/'.$user->id, 'More...') }}</td>
 		        	@endif
 	        	</tr>
 	        	@empty
