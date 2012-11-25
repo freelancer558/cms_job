@@ -31,6 +31,7 @@ class Base_Controller extends Controller {
             $this->filter('before', 'auth');
             break;
     }
+
 	}
 
 	public function __call($method, $parameters)

@@ -45,6 +45,8 @@ Route::get('/dashboard/users', 'users@index');
 Route::get('/about', 'home@about');
 Route::get('/users/(:num)', 'users@show');
 Route::get('/users/(:num)/edit', 'users@edit');
+Route::post('/users/(:num)/edit', 'users@edit');
+Route::get('/users/(:num)/delete', 'users@destroy');
 Route::controller(Controller::detect());
 /*
 |--------------------------------------------------------------------------

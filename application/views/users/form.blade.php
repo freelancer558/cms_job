@@ -1,6 +1,10 @@
 {{ $form->open() }}
       {{ $form->text('metadata.student_code', 'Student Code') }}
-      {{ $form->text('email', 'Email.req') }}
+      @if(Request::route()->controller_action == 'edit')
+            {{ $form->text('email', 'Email', $user->email, array('disabled'=>true)) }}
+      @else
+            {{ $form->text('email', 'Email.req') }}
+      @endif
       {{ $form->password('password', 'Password.req') }}
       {{ $form->password('password_confirmation', 'Password Confirmation.req') }}
       {{ $form->text('metadata.first_name', 'First Name') }}

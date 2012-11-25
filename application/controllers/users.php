@@ -7,8 +7,9 @@ class Users_Controller extends Base_Controller
   public function get_index()
   {
     $users = User::all();
-
-    return View::make('users.index', array('users' => $users));
+    $current_user = Sentry::user();
+    $has_access = $current_user->has_access($current_user->groups()[0]["name"]);
+    return View::make('users.index', array('users' => $users, 'current_user' => $current_user, 'has_access' => $has_access));
   }
   public function get_show()
   {
@@ -46,10 +47,67 @@ class Users_Controller extends Base_Controller
     }
     return View::make('users.edit', array('user' => $user, 'group' => $g))->with('form', $form);
   }
+
+  public function post_edit()
+  {
+    $data         = array();
+    $id           = (int)Request::route()->parameters[0];
+    $params       = Input::all();
+    $inputs       = array(
+      'password'  => $params['password'],
+      'password_confirmation' => $params['password_confirmation'],
+      'metadata'  => array(
+        'student_code'  => $params['metadata_student_code'],
+        'first_name'    => $params['metadata_first_name'],
+        'last_name'     => $params['metadata_last_name'],
+        'address'       => $params['metadata_address'],
+        'sex_type'      => $params['metadata_sex_type'],
+        'telephone'     => $params['metadata_telephone'],
+      ),
+    );
+
+    foreach($inputs as $key => $value){
+      if(is_array($value)){
+        foreach($value as $meta_key => $meta_value){
+          if(empty($value[$meta_key])) unset($value[$meta_key]);
+        }
+      }else{
+        if(empty($inputs[$key])){
+          unset($inputs[$key]);
+        }
+      }
+    }
+    // print_r($inputs);
+    
+    try
+    {
+      // update the user
+      $user = Sentry::user($id);
+      $update = $user->update($inputs);
+      if (!$update)
+      {
+        $data['errors'] = 'Update fail, Please check you information.';
+      }
+    }
+    catch (Sentry\SentryException $e)
+    {
+      $data['errors']  = $e->getMessage(); // catch errors such as user not existing or bad fields
+    }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('users/edit')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      $data['success'] = 'Update successfull.';
+      return Redirect::to('users/index')->with_input()->with('status_success', $data['success']);
+    }
+  }
+
   public function post_authenticate()
   {
     $email = Input::get('email');
-    $password = md5('codeponpon' . Input::get('password'));
+    $password = Input::get('password');
     $new_user = Input::get('new_user', 'off');
     
     $input = array(
@@ -90,13 +148,13 @@ class Users_Controller extends Base_Controller
         }
         catch (Sentry\SentryException $e)
         {
-          return Redirect::to('home')->with_errors($e->getMessage());
+          return Redirect::to('home')->with_input()->with('status_error', $e->getMessage());
         }
     } else {
     
         $rules = array(
             'email' => 'required|email|exists:users',
-            'password' => 'required'
+            'password' => 'required',
         );
         
         $validation = Validator::make($input, $rules);
@@ -113,7 +171,7 @@ class Users_Controller extends Base_Controller
         try
         {
           // log the user in
-          $valid_login = Sentry::login($credentials['username'], $credentials['password'], true);
+          $valid_login = Sentry::login($credentials['username'], $credentials['password']);
           if ($valid_login)
           {
             return Redirect::to('dashboard');
@@ -126,7 +184,7 @@ class Users_Controller extends Base_Controller
         }
         catch (Sentry\SentryException $e)
         {
-          return Redirect::to('home')->with_errors($validation);
+          return Redirect::to('home')->with('status_error', $e->getMessage());
         }
     }
   }
@@ -139,11 +197,13 @@ class Users_Controller extends Base_Controller
 
   public function post_new()
   {
-    $params           = Input::all();
+    $params       = Input::all();
+    $data         = array();
     // return print_r($params);
-    $inputs           = array(
+    $inputs       = array(
       'email'     => $params["email"],
       'password'  => $params['password'],
+      'password_confirmation' => $params['password_confirmation'],
       'activated'  => 1,
       'metadata'  => array(
         'student_code'  => $params['metadata_student_code'],
@@ -154,27 +214,66 @@ class Users_Controller extends Base_Controller
         'telephone'     => $params['metadata_telephone'],
       ),
     );
-    // return print_r($inputs);
-    // $rules = array(
-    //   'email' => 'required|email|exists:users',
-    //   'password' => 'required|confirmed',
-    // );
-    // $validation = Validator::make($inputs, $rules);
-    // if( $validation->fails() ) {
-    //   return Redirect::to('users/new')->with_errors($validation);
-    // }
+    $rules = array(
+      'email' => 'required|email',
+      'password' => 'required|confirmed',
+      'password_confirmation' => 'required',
+    );
+    $validation = Validator::make($inputs, $rules);
+
+    if ($validation->fails()) {
+        return Redirect::to('users/new')->with_input()->with_errors($validation);
+    }
     try
     {
-      // create the user
-      $user = Sentry::user()->register($inputs);
-      Sentry::user($user["id"])->add_to_group($params['group']);
-    
-      return Redirect::to('users/index');
+      unset($inputs["password_confirmation"]);
+      $user = Sentry::user()->create($inputs);
+
+      if(!$user)
+      {
+        $data['errors'] = 'There was an issue when add user to database';
+      }
     }
     catch (Sentry\SentryException $e)
     {
-      return $e->getMessage();
+        $data['errors'] = $e->getMessage();
     }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('users/new')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      Sentry::user($user)->add_to_group($params['group']);
+      return Redirect::to('users/index');
+    }
+
   }
 
+  public function get_destroy()
+  {
+    $id = (int)Request::route()->parameters[0];
+    try
+    {
+      // update the user
+      $delete = Sentry::user($id)->delete();
+      if ($delete)
+      {
+          return Redirect::to('users/index');
+      }
+    }
+    catch (Sentry\SentryException $e)
+    {
+      $data['errors'] = $e->getMessage();
+    }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('users/index')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      $data['success'] = 'Delete successfull.';
+      return Redirect::to('users/index')->with_input()->with('status_success', $data['success']);
+    }
+  }
 }
