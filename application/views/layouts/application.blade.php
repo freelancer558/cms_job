@@ -27,11 +27,7 @@
               </ul>
           </div><!--/.nav-collapse -->
           @section('post_navigation')
-          {{--
-          @if (Auth::check())
-              @include('shared.loggedin_nav')
-          @endif
-          --}}
+          
           @if(isset($user))
             @include('shared.import_user')
           @endif
