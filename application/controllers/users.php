@@ -8,7 +8,7 @@ class Users_Controller extends Base_Controller
   {
     $users = User::all();
     $current_user = Sentry::user();
-    $has_access = $current_user->has_access($current_user->groups()[0]["name"]);
+    $has_access = $current_user->has_access($current_user->groups()[0]['name']);
     return View::make('users.index', array('users' => $users, 'current_user' => $current_user, 'has_access' => $has_access));
   }
   public function get_show()
@@ -135,16 +135,30 @@ class Users_Controller extends Base_Controller
         {
           // create the user
           $user = Sentry::user()->create($input);
-          $user = Sentry::user($user);
-          try{
-            $user->add_to_group('superuser');
+          //$user = Sentry::user($user);
+          if($user){
+            // check if group exists
+            if (Sentry::group_exists('superuser')) // or Sentry::group_exists(3)
+            {
+              Sentry::user($user)->add_to_group('superuser');
+            }
+            else
+            {
+              $permissions = array(
+                'can_edit'    => 1,
+                'can_update'  => 1,
+                'can_delete'  => 1,
+                'can_add'     => 1,
+                'can_manage'  => 1,
+              );
+              $group    = Sentry::group();
+              $group_id = $group->create(array('name'  => 'superuser'));
+              $update_group = Sentry::group('superuser')->update_permissions($permissions);
+              Sentry::user($user)->add_to_group('superuser');
+            }
+            
+            return Redirect::to('home')->with('status_success', 'Signup Success.');
           }
-          catch (Sentry\SentryException $e)
-          {
-            return Redirect::to('home')->with_errors($e->getMessage());
-          }
-
-          return Redirect::to('home');
         }
         catch (Sentry\SentryException $e)
         {

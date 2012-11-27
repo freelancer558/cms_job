@@ -29,7 +29,7 @@
         </div>
         
         <div class="span4">
-            <img src="img/phones.png" alt="Instapics!" />
+            <!-- <img src="img/phones.png" alt="Instapics!" /> -->
         </div>
     </div>
     

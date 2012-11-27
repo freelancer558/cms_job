@@ -46,11 +46,7 @@
     </div> <!-- /container -->
 
     @section('form_modals')
-    {{--
-    @if (Sentry::check())
-      @include('shared.upload_modal')
-    @endif
-    --}}
+    
     @if(Sentry::check() && Request::route()->controller == 'user')
       @include('shared.new_user_modal')
     @endif
