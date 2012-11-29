@@ -5,11 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>Laravel: A Framework For Web Artisans</title>
 		<meta name="viewport" content="width=device-width">
-    <?php Asset::add('application', '/css/application.css'); ?>
+    <?php Asset::add('application', 'css/application.css'); ?>
+    <?php Asset::add('jqueryui', 'css/flick/jquery-ui.css') ?>
     {{ Asset::container('bootstrapper')->styles() }}
     {{ Asset::styles() }}
 		@yield('styles')
 
+    <?php Asset::add('jqueryui', 'js/jquery-ui-min.js') ?>
+    <?php Asset::add('datetimerpicker', 'js/datetimepicker.js') ?>
     {{ Asset::container('bootstrapper')->scripts() }}
 		{{ Asset::scripts() }}
 		@yield('scripts')
@@ -30,6 +33,8 @@
           
           @if(isset($user))
             @include('shared.import_user')
+          @elseif(Request::route()->controller == 'products')
+            @include('shared.import_product')
           @endif
           @yield_section
         </div>
@@ -44,11 +49,10 @@
       	<p>&copy; Scientific equipment and chemical management system for Biological laboratory.</p>    
       </footer>
     </div> <!-- /container -->
-
-    @section('form_modals')
     
-    @if(Sentry::check() && Request::route()->controller == 'user')
-      @include('shared.new_user_modal')
+    @section('form_modals')
+    @if(Sentry::check() && Request::route()->controller == 'products')
+      @include('shared.upload_modal')
     @endif
     @yield_section
   </body>

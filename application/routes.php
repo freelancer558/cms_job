@@ -41,12 +41,19 @@
 // http://bundles.laravel.com/bundle/routely
 // Start the bundle if its not auto-started
 Bundle::start('routely');
-Route::get('/dashboard/users', 'users@index');
+Route::get('/users', 'users@index');
 Route::get('/about', 'home@about');
 Route::get('/users/(:num)', 'users@show');
 Route::get('/users/(:num)/edit', 'users@edit');
 Route::post('/users/(:num)/edit', 'users@edit');
 Route::get('/users/(:num)/delete', 'users@destroy');
+
+Route::get('/products', 'products@index');
+Route::get('/products/(:num)', 'products@show');
+Route::get('/products/(:num)/edit', 'products@edit');
+Route::post('/products/(:num)/edit', 'products@edit');
+Route::get('/products/(:num)/delete', 'products@destroy');
+
 Route::controller(Controller::detect());
 /*
 |--------------------------------------------------------------------------
