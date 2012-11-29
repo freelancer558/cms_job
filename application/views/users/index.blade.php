@@ -18,7 +18,7 @@
         			<th></th>
         		</thead>
         		<tbody>
-	        	@forelse($users as $user)
+	        	@forelse($users->results as $user)
 	        	<tr>
 	        		<td>{{$user->email}}</td>
 	        		@if($user->users_metadata)

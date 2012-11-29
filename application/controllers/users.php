@@ -3,10 +3,11 @@
 class Users_Controller extends Base_Controller
 {
   var $layout = "layouts.application";
+  public static $per_page = 10;
   public $restful = true;
   public function get_index()
   {
-    $users = User::all();
+    $users = User::order_by('created_at', 'asc')->paginate();
     $current_user = Sentry::user();
     $has_access = $current_user->has_access($current_user->groups()[0]['name']);
     return View::make('users.index', array('users' => $users, 'current_user' => $current_user, 'has_access' => $has_access));

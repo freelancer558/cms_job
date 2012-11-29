@@ -17,11 +17,11 @@
                         <th>Data</th>
                         <th>Total</th>
                         <th>Disburse</th>
-                        <th></th>
+                        <th>Created at</th>
                     </tr>
                 </thead>
                 <tbody>
-                @forelse($products as $product)
+                @forelse($products->results as $product)
                 <tr>
                     <td></td>
                     <td>{{$product->name}}</td>
@@ -42,6 +42,7 @@
                 @endforelse
                 </tbody>
             </table>
+            {{ $products->links() }}
         </div>
     </div>
 </div>

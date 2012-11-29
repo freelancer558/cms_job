@@ -3,10 +3,12 @@
 class Products_Controller extends Base_Controller
 {
 	var $layout = "layouts.application";
+	public static $per_page = 10;
 	public $restful = true;
+
 	public function get_index()
 	{
-		$products = Product::all();
+		$products = Product::order_by('created_at', 'asc')->paginate();
 	    $current_user = Sentry::user();
 	    $has_access = $current_user->has_access($current_user->groups()[0]['name']);
 	    return View::make('products.index', array('products' => $products, 'current_user' => $current_user, 'has_access' => $has_access));
