@@ -37,6 +37,7 @@ class Products_Controller extends Base_Controller
 	      'sum'  	=> $params['sum'],
 	      'data' 	=> $params['data'],
 	      'model'  	=> $params['model'],
+	      'serial_no'=>$params['serial_no'],
 	      'disburse'=> $params['disburse'],
 	    );
 	    //return print_r($inputs);
@@ -46,6 +47,7 @@ class Products_Controller extends Base_Controller
 	      'data' 	=> 'required',
 	      'model'  	=> 'required', 
 	      'disburse'=> 'required',
+	      'serial_no'=>'required',
 	    );
 	    $validation = Validator::make($inputs, $rules);
 
@@ -104,6 +106,7 @@ class Products_Controller extends Base_Controller
 	      'data' 	=> $params['data'],
 	      'model'  	=> $params['model'],
 	      'disburse'=> $params['disburse'],
+	      'serial_no'=>$params['serial_no'],
 	    );
 	    //return print_r($inputs);
 	    $rules = array(
@@ -112,6 +115,7 @@ class Products_Controller extends Base_Controller
 	      'data' 	=> 'required',
 	      'model'  	=> 'required', 
 	      'disburse'=> 'required',
+	      'serial_no'=>'required',
 	    );
 
 	    $validation = Validator::make($inputs, $rules);
@@ -143,6 +147,7 @@ class Products_Controller extends Base_Controller
 	      	if($key == 'data') $product->data = $inputs["data"];
 	      	if($key == 'model') $product->model = $inputs["model"];
 	      	if($key == 'disburse') $product->disburse = $inputs["disburse"];
+	      	if($key == 'serial_no') $product->serial_no = $inputs["serial_no"];
 	      }
 	      // return print_r($inputs);
 	      if (!$product->save())
@@ -190,4 +195,11 @@ class Products_Controller extends Base_Controller
 	      return Redirect::to('products/index')->with('status_success', $data['success']);
 	    }
 	  }
+
+	public function get_detail()
+	{
+		$id = (int)Request::route()->parameters[0];
+		$product = Product::find($id);
+		return Response::json($product, 200);
+	}
 }

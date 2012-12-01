@@ -2,7 +2,13 @@
   <h4>Menu</h4>
   <ul class="nav nav-list">
     <!-- <li class="nav-header"><a href="#">Chemicals</a></li> -->
-    <li class="nav-header">{{HTML::link('/products', 'Products')}}</li>
-    <li class="nav-header">{{HTML::link('/users', 'Users')}}</li>
+    @if(Sentry::user()->in_group('superuser'))
+	    <li class="nav-header">{{HTML::link('/products', 'Products')}}</li>
+	    <li class="nav-header">{{HTML::link('/users', 'Users')}}</li>
+	@elseif(Sentry::user()->in_group('teacher'))
+		for teacher
+	@else
+		<li class="nav-header">{{ HTML::link('/users/'.Sentry::user()->id, 'Account Informations') }}</li>
+    @endif
   </ul>
 </div>

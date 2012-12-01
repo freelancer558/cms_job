@@ -12,10 +12,20 @@ class Users_Controller extends Base_Controller
     $has_access = $current_user->has_access($current_user->groups()[0]['name']);
     return View::make('users.index', array('users' => $users, 'current_user' => $current_user, 'has_access' => $has_access));
   }
+  public function get_login()
+  {
+    // $this->layout->nest('content', 'home.index');
+    if(Sentry::check())
+    {
+        return View::make('dashboard.index');
+    }
+    return View::make('users.login');
+  }
   public function get_show()
   {
     $params = Request::route()->parameters;
     $user = Sentry::user((int)$params[0]);
+    if((int)$params[0] != Sentry::user()->id || Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', "You don't have permission.");
     return View::make('users.show', array('user' => $user));
   }
   public function get_new()
@@ -37,6 +47,7 @@ class Users_Controller extends Base_Controller
   {
     $params = Request::route()->parameters;
     $user = Sentry::user((int)$params[0]);
+    if((int)$params[0] != Sentry::user()->id || Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard');
 
     $form = Formly::make($user);
     $form->form_class = 'form-horizontal';
@@ -58,12 +69,12 @@ class Users_Controller extends Base_Controller
       'password'  => $params['password'],
       'password_confirmation' => $params['password_confirmation'],
       'metadata'  => array(
-        'student_code'  => $params['metadata_student_code'],
-        'first_name'    => $params['metadata_first_name'],
-        'last_name'     => $params['metadata_last_name'],
-        'address'       => $params['metadata_address'],
-        'sex_type'      => $params['metadata_sex_type'],
-        'telephone'     => $params['metadata_telephone'],
+        'student_code'  => $params['users_metadata_student_code'],
+        'first_name'    => $params['users_metadata_first_name'],
+        'last_name'     => $params['users_metadata_last_name'],
+        'address'       => $params['users_metadata_address'],
+        'sex_type'      => $params['users_metadata_sex_type'],
+        'telephone'     => $params['users_metadata_telephone'],
       ),
     );
 
@@ -82,12 +93,17 @@ class Users_Controller extends Base_Controller
     
     try
     {
+      // return print_r($inputs);
       // update the user
       $user = Sentry::user($id);
+      $user_group_id = (int)$user->groups()[0]['id'];
       $update = $user->update($inputs);
       if (!$update)
       {
         $data['errors'] = 'Update fail, Please check you information.';
+      }else{
+        $user->remove_from_group($user_group_id);
+        $user->add_to_group($params['group']);
       }
     }
     catch (Sentry\SentryException $e)
@@ -158,12 +174,12 @@ class Users_Controller extends Base_Controller
               Sentry::user($user)->add_to_group('superuser');
             }
             
-            return Redirect::to('home')->with('status_success', 'Signup Success.');
+            return Redirect::to('dashboard/index')->with('status_success', 'Signup Success.');
           }
         }
         catch (Sentry\SentryException $e)
         {
-          return Redirect::to('home')->with_input()->with('status_error', $e->getMessage());
+          return Redirect::to('users/login')->with_input()->with('status_error', $e->getMessage());
         }
     } else {
     
@@ -194,12 +210,12 @@ class Users_Controller extends Base_Controller
           else
           {
             Session::flash('status_error', 'Your email or password is invalid - please try again.');
-            return Redirect::to('home');
+            return Redirect::to('users/login');
           }
         }
         catch (Sentry\SentryException $e)
         {
-          return Redirect::to('home')->with('status_error', $e->getMessage());
+          return Redirect::to('users/login')->with('status_error', $e->getMessage());
         }
     }
   }
@@ -290,5 +306,72 @@ class Users_Controller extends Base_Controller
       $data['success'] = 'Delete successfull.';
       return Redirect::to('users/index')->with_input()->with('status_success', $data['success']);
     }
+  }
+
+  public function get_repairing()
+  {
+    $repairing = new Repair();
+    $form = Formly::make($repairing);
+    $form->form_class = 'form-horizontal';
+    $form->auto_token = false;
+
+    $user = Sentry::user();
+    $products = Product::all();
+    return View::make('users.repairing', array(
+      'repairing' => $repairing,
+      'form'      => $form,
+      'products'  => $products,
+      'user'      => $user,
+    ));   
+  }
+  public function post_repairing()
+  {
+    $params       = Input::all();   
+    $data         = array();
+    // return print_r($params);
+    $inputs       = array(
+      'name'      => $params['name'],
+      'date'      => $params['date'],
+      'product_id'=> (int)$params['product'],
+      'detail'    => $params['detail'],
+      'setup_place'=>$params['setup_place'],
+      'user_id'   => Sentry::user()->id,
+    );
+    $rules = array(
+      'name'        => 'required',
+      'date'        => 'required',
+      'product_id'  => 'required',
+      'detail'      => 'required',
+      'user_id'     => 'required',
+      'setup_place' => 'required',
+    );
+    $validation = Validator::make($inputs, $rules);
+
+    if ($validation->fails()) {
+        return Redirect::to('users/repairing')->with_input()->with_errors($validation);
+    }
+    try
+    {
+      $repair  = new Repair($inputs);
+
+      if(!$repair->save())
+      {
+        $data['errors'] = 'Cannot send repair, Please check you inputs again.';
+      }
+    }
+    catch (Sentry\SentryException $e)
+    {
+        $data['errors'] = $e->getMessage();
+    }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('users/repairing')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      $data['success'] = 'Repairing has send successfull.';
+      return Redirect::to('/dashboard')->with('status_success', $data['success']);
+    }
+
   }
 }

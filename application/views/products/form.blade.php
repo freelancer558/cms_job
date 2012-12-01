@@ -3,6 +3,7 @@
       {{ $form->text('name', 'Name') }}
       {{ $form->text('sum', 'Total') }}
       {{ $form->textarea('data', 'Data') }}
+      {{ $form->text('serial_no', 'Serial No.') }}
       {{ $form->text('model', 'Model') }}
       {{ $form->text('disburse', 'Disburse') }}
       <!-- {{ $form->file('picture', "Picture") }} -->

@@ -25,15 +25,17 @@
           <div class="nav-collapse">
               <ul class="nav">
                   @section('navigation')
-                  <li class="active"><a href="/home">Home</a></li>
+                  @unless(Sentry::check())
+                    <li class="<?php if(Request::route()->controller_action == 'index') echo 'active';?>"><a href="/home">Home</a></li>
+                    <li class="<?php if(Request::route()->controller_action == 'login') echo 'active';?>">{{HTML::link('/users/login', 'Login')}}</li>
+                  @endunless
                   @yield_section
               </ul>
           </div><!--/.nav-collapse -->
           @section('post_navigation')
-          
-          @if(isset($user))
+          @if(isset($user) && Sentry::user()->in_group('superuser'))
             @include('shared.import_user')
-          @elseif(Request::route()->controller == 'products')
+          @elseif(Request::route()->controller == 'products' && Sentry::user()->in_group('superuser'))
             @include('shared.import_product')
           @endif
           @yield_section

@@ -12,3 +12,7 @@
 	bottom: 8px;
 	margin-left: -20px;
 }
+.center {
+	float: none;
+	margin: 0 auto;
+}

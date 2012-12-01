@@ -6,7 +6,7 @@ class Dashboard_Controller extends Base_Controller
         // $photos = Auth::user()->photos()->order_by('created_at', 'desc')->order_by('id', 'desc')->get();
         // return View::make('dashboard.index', array('photos' => $photos));
         if(Sentry::check()) return View::make('dashboard.index');
-        return Redirect::to('home')->with('status_error', 'You have to signin before access dashboard.');
+        return Redirect::to('/users/login')->with('status_error', 'You have to signin before access dashboard.');
     }
     
     public function action_insert_test_data()

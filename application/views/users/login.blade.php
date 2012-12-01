@@ -1,31 +1,29 @@
+@layout('layouts/application')
+
+@section('navigation')
+@parent
+<li><a href="about">About</a></li>
+@endsection
+
 @section('content')
-<div id="content_wrapper">
-	<div id="active_admin_content">
-		<div id="login">
-			<h2>Login</h2>
-			{{ Form::open('user/authenticate', 'POST', array("class"=>"formtastic admin_user", "novalidate"=>"novalidate", "id"=>"session_new", "accept-charset"=>"UTF-8") ) }}
-				<fieldset class="inputs">
-					<ol>
-						<li class="email input required stringish" id="admin_user_email_input">
-							<label class=" label" for="admin_user_email">Email<abbr title="required">*</abbr></label>
-							<input id="login" maxlength="255" name="login" type="email" value=""/>
-						</li>
-						<li class="password input required stringish" id="admin_user_password_input">
-							<label class=" label" for="admin_user_password">Password<abbr title="required">*</abbr>
-							</label><input id="password" maxlength="128" name="password" type="password"/>
-						</li>
-						<li class="boolean input optional" id="admin_user_remember_me_input">
-							<input name="admin_user[remember_me]" type="hidden" value="0"/>
-						</li>
-					</ol>
-				</fieldset>
-				<fieldset class="buttons">
-					<ol>
-						<li class="commit button"><input class="create" id="admin_user_submit" name="commit" type="submit" value="Enter"/></li>
-					</ol>
-				</fieldset>
-			{{ Form::close()}}
-		</div>
-	</div>
-</div>
+    <div class="row">
+        <div class="span3 center">            
+            <form class="well" method="POST" action="/users/authenticate">
+                <label for="email">Email</label>
+                <input type="email" placeholder="Your Email Address" name="email" id="email" />
+                <label for="password">Password</label>
+                <input type="password" placeholder="Your Password" name="password" id="password" />
+                <label class="checkbox" for="new_user">
+                    <input type="checkbox" name="new_user" id="new_user"> I am a new user
+                </label>
+                <br />
+                <button type="submit" class="btn btn-success">Login or Register</button>
+            </form>
+        </div>
+        
+        <div class="span4">
+            <!-- <img src="img/phones.png" alt="Instapics!" /> -->
+        </div>
+    </div>
+    
 @endsection

@@ -13,15 +13,15 @@ class Create_Repairs_Table {
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->date('date');
-	    $table->string('sypm');
+		    $table->string('sypm');
 
-	    $table->integer('user_id')->unsigned();
-	    $table->integer('product_id')->unsigned();
+		    $table->integer('user_id')->unsigned();
+		    $table->integer('product_id')->unsigned();
 
-	    $table->foreign('user_id')->references('id')->on('users')->on_delete('restrict');;
+		    $table->foreign('user_id')->references('id')->on('users')->on_delete('restrict');;
  			$table->foreign('product_id')->references('id')->on('products')->on_delete('restrict');;
 
-	    $table->timestamps();
+	    	$table->timestamps();
 		});
 	}
 

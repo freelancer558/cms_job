@@ -32,7 +32,7 @@
                     </tr>
                     <tr>
                         <td>Sex</td>
-                        <td>{{ $user->get('metadata.sex_type') ? "Male" : "Female" }}</td>
+                        <td>{{ $user->get('metadata.sex_type') ? "Female" : "Male" }}</td>
                     </tr>
                     <tr>
                         <td>Telephone</td>
