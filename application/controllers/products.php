@@ -8,7 +8,7 @@ class Products_Controller extends Base_Controller
 
 	public function get_index()
 	{
-		$products = Product::order_by('created_at', 'asc')->paginate();
+		$products = Product::order_by('created_at', 'desc')->paginate();
 	    $current_user = Sentry::user();
 	    $has_access = $current_user->has_access($current_user->groups()[0]['name']);
 	    return View::make('products.index', array('products' => $products, 'current_user' => $current_user, 'has_access' => $has_access));
@@ -58,8 +58,25 @@ class Products_Controller extends Base_Controller
 	    {
 	      $product = new Product($inputs);
 
-	      if(!$product->save())
+	      if($product->save())
 	      {
+	      	$extension = File::extension($params['photo']['name']);
+			$directory = path('public').'uploads/'.sha1(Sentry::user()->id);
+			$filename = sha1(Sentry::user()->id.time()).".{$extension}";
+
+			$upload_success = Input::upload('photo', $directory, $filename);
+
+			if( $upload_success ) {
+				$photo = new Photo(array(
+					'chemical_id'	=> 0,
+					'user_id'		=> 0,	
+					'location' => URL::to('uploads/'.sha1(Sentry::user()->id).'/'.$filename),
+				));
+				$product->photos()->insert($photo);
+			} else {
+				$data['errors'] = 'An error occurred while uploading your new Instapic - please try again.';
+			}
+	      }else{
 	        $data['errors'] = 'Cannot save please check again.';
 	      }
 	    }

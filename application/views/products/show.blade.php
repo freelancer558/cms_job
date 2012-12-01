@@ -34,6 +34,16 @@
                         <td>Created at</td>
                         <td>{{ $product->created_at }}</td>
                     </tr>
+                    @unless(empty($product->photos()->first()->id))
+                    <tr>
+                        <td>Photo</td>
+                        <td>
+                        <span class="span4">
+                            <img src="<?php echo $product->photos()->first()->location; ?>" class="thumbnail">
+                        </span>
+                        </td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
             <a href="{{URL::to('/products/'.$product->id.'/edit')}}" class="btn btn-primary"><i class="icon icon-white icon-edit"></i> Edit</a>

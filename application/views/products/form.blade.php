@@ -1,4 +1,4 @@
-{{ $form->open() }}
+{{ $form->open_for_files() }}
 
       {{ $form->text('name', 'Name') }}
       {{ $form->text('sum', 'Total') }}
@@ -6,7 +6,7 @@
       {{ $form->text('serial_no', 'Serial No.') }}
       {{ $form->text('model', 'Model') }}
       {{ $form->text('disburse', 'Disburse') }}
-      <!-- {{ $form->file('picture', "Picture") }} -->
+      {{ $form->file('photo', "Photo") }}
       {{ $form->submit_primary('Save') }}
 {{ $form->close() }}
 
