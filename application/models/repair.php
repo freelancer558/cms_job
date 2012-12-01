@@ -14,4 +14,9 @@ class Repair extends Appmodel {
 		return $this->has_one('Status_Repair');
 	}
 
+	public function user()
+	{
+		return $this->belongs_to('User', 'user_id');
+	}
+
 }

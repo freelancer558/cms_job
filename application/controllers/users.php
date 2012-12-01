@@ -7,7 +7,7 @@ class Users_Controller extends Base_Controller
   public $restful = true;
   public function get_index()
   {
-    $users = User::order_by('created_at', 'asc')->paginate();
+    $users = User::order_by('created_at', 'desc')->paginate();
     $current_user = Sentry::user();
     $has_access = $current_user->has_access($current_user->groups()[0]['name']);
     return View::make('users.index', array('users' => $users, 'current_user' => $current_user, 'has_access' => $has_access));
@@ -370,7 +370,7 @@ class Users_Controller extends Base_Controller
     else
     {
       $data['success'] = 'Repairing has send successfull.';
-      return Redirect::to('/dashboard')->with('status_success', $data['success']);
+      return Redirect::to('/repairs')->with('status_success', $data['success']);
     }
 
   }
