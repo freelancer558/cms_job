@@ -60,21 +60,23 @@ class Products_Controller extends Base_Controller
 
 	      if($product->save())
 	      {
-	      	$extension = File::extension($params['photo']['name']);
-			$directory = path('public').'uploads/'.sha1(Sentry::user()->id);
-			$filename = sha1(Sentry::user()->id.time()).".{$extension}";
+	      	if(!empty($params['photo'])){
+		      	$extension = File::extension($params['photo']['name']);
+				$directory = path('public').'uploads/'.sha1(Sentry::user()->id);
+				$filename = sha1(Sentry::user()->id.time()).".{$extension}";
 
-			$upload_success = Input::upload('photo', $directory, $filename);
+				$upload_success = Input::upload('photo', $directory, $filename);
 
-			if( $upload_success ) {
-				$photo = new Photo(array(
-					'chemical_id'	=> 0,
-					'user_id'		=> 0,	
-					'location' => URL::to('uploads/'.sha1(Sentry::user()->id).'/'.$filename),
-				));
-				$product->photos()->insert($photo);
-			} else {
-				$data['errors'] = 'An error occurred while uploading your new Instapic - please try again.';
+				if( $upload_success ) {
+					$photo = new Photo(array(
+						'chemical_id'	=> 0,
+						'user_id'		=> 0,	
+						'location' => URL::to('uploads/'.sha1(Sentry::user()->id).'/'.$filename),
+					));
+					$product->photos()->insert($photo);
+				} else {
+					$data['errors'] = 'An error occurred while uploading your new Instapic - please try again.';
+				}
 			}
 	      }else{
 	        $data['errors'] = 'Cannot save please check again.';
@@ -167,7 +169,28 @@ class Products_Controller extends Base_Controller
 	      	if($key == 'serial_no') $product->serial_no = $inputs["serial_no"];
 	      }
 	      // return print_r($inputs);
-	      if (!$product->save())
+	      if ($product->save()){
+	      	if(!empty($params['photo'])){
+		      	$extension = File::extension($params['photo']['name']);
+				$directory = path('public').'uploads/'.sha1(Sentry::user()->id);
+				$filename = sha1(time()).".{$extension}";
+
+				$upload_success = Input::upload('photo', $directory, $filename);
+
+				if( $upload_success ) {
+					$product->photos()->delete();
+					$photo = new Photo(array(
+						'chemical_id'	=> 0,
+						'user_id'		=> 0,	
+						'location' => URL::to('uploads/'.sha1(Sentry::user()->id).'/'.$filename),
+					));
+					$product->photos()->insert($photo);
+				} else {
+					$data['errors'] = 'An error occurred while uploading your new Instapic - please try again.';
+				}
+			}
+	      }
+	      else
 	      {
 	        $data['errors'] = 'Update fail, Please check you information.';
 	      }
