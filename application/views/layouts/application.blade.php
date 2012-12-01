@@ -21,7 +21,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="home">SCBL</a>
+          {{ HTML::link('/home', 'SCBL', array('class'=>'brand')) }}
           <div class="nav-collapse">
               <ul class="nav">
                   @section('navigation')
