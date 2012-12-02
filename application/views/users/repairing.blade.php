@@ -61,9 +61,9 @@ $(document).ready(function(){
         if(product_id != 0){
             $.get('/products/'+product_id+'/detail', function(result){
                 var $product = result.original;
-                console.log($product);
+                // console.log($product);
                 $('#field_product_model').val($product.model);
-                $('#field_product_seriel_no').val($product.serial_no);    
+                $('#field_product_serial_no').val($product.serial_no);    
             }, 'json');
         }else{
             $('#field_product_model').val('');

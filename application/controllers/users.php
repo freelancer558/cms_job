@@ -354,7 +354,14 @@ class Users_Controller extends Base_Controller
     {
       $repair  = new Repair($inputs);
 
-      if(!$repair->save())
+      if($repair->save())
+      {
+        $status_repair = new StatusRepair(array(
+          'title'   => 'pending',
+        ));
+        $repair->status_repair()->insert($status_repair);
+      }
+      else
       {
         $data['errors'] = 'Cannot send repair, Please check you inputs again.';
       }
