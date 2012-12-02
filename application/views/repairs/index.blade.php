@@ -33,7 +33,7 @@
 	        		<td>
 		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>
 	        			@if(Sentry::user()->in_group('superuser'))
-		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status)) }}
+		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
 		        		@else
 		        			@if($status->title == 'fixed')
 		        				<span class="label label-success">{{$status->title}}</span>
