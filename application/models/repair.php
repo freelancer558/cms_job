@@ -4,6 +4,7 @@ class Repair extends Appmodel {
 
 	public static $timestamps = true;
 	public static $table = 'repairs';
+	
 	public function products()
 	{
 		return $this->has_many('Product');
@@ -11,7 +12,7 @@ class Repair extends Appmodel {
 	
 	public function status_repair()
 	{
-		return $this->has_one('Status_Repair');
+		return $this->has_one('StatusRepair');
 	}
 
 	public function user()

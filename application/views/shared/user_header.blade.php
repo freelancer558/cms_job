@@ -5,7 +5,7 @@
 	<li class="<?php if(Request::route()->controller == 'dashboard') echo 'active';?>">
 		{{ HTML::link('/dashboard', 'Dashboard') }}
 	</li>
-	@if(Sentry::user()->in_group('student'))
+	@if(Sentry::user()->in_group('student') || Sentry::user()->in_group('teacher'))
 		<li class="<?php if(Request::route()->controller_action == 'repairing') echo 'active';?>">{{HTML::link('/users/repairing', 'Repairing')}}</li>
 	@endif
 	<li>{{HTML::link('/users/logout', 'Logout')}}</li>
