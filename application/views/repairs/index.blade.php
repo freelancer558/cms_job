@@ -69,6 +69,10 @@ $(document).ready(function(){
 			console.log(result);
 		})
 	});
+	$('a[data-confirm]').bind('click', function(e){
+        if(confirm($(this).attr('data-confirm'))) return true;
+        e.preventDefault();
+    });
 });
 </script>
 @endsection

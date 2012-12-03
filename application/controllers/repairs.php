@@ -24,13 +24,24 @@ class Repairs_Controller extends Base_Controller {
 			'title'		=> $params['title'],
 			'repair_id'	=> $params['repair_id'],
 		);
-		$repair = StatusRepair::where_repair_id((int)$params['repair_id'])->first();
-		if(empty($repair)){
-			$repair = new StatusRepair($inputs);
-			return !$repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
+		$status_repair = StatusRepair::where_repair_id((int)$params['repair_id'])->first();
+		$repair = Repair::find((int)$params['repair_id']);
+		if(empty($status_repair)){
+			$status_repair = new StatusRepair($inputs);
+			if($status_repair != 'fixed' && $params['title'] == 'fixed'){
+				$product = Product::find($repair->product_id);
+				$product->sum = $product->sum + 1;	
+				$product->save();
+			} 
+			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
 		}else{
-			$repair->title = $params['title'];
-			return !$repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
+			$status_repair->title = $params['title'];
+			if($status_repair != 'fixed' && $params['title'] == 'fixed'){
+				$product = Product::find($repair->product_id);
+				$product->sum = $product->sum + 1;	
+				$product->save();
+			}
+			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
 		}
 	}
 
