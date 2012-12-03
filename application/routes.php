@@ -61,6 +61,15 @@ Route::get('/repairs', 'repairs@index');
 Route::get('/repairs/(:num)/delete', 'repairs@destroy');
 Route::post('/repairs(:all)', 'repairs@create');
 
+Route::get('/chemicals', 'chemicals@index');
+Route::get('/chemicals/new', 'chemicals@new');
+Route::post('/chemicals/addtype', 'chemicals@addtype');
+Route::get('/chemicals/(:num)', 'chemicals@show');
+Route::get('/chemicals/(:num)/edit', 'chemicals@edit');
+Route::post('/chemicals/(:num)/edit', 'chemicals@edit');
+Route::get('/chemicals/(:num)/delete', 'chemicals@destroy');
+Route::get('/chemicals/(:num)/detail', 'chemicals@detail');
+
 Route::controller(Controller::detect());
 /*
 |--------------------------------------------------------------------------

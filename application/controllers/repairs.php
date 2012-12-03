@@ -4,6 +4,7 @@ class Repairs_Controller extends Base_Controller {
 
 	public function action_index()
 	{	$user = Sentry::user();
+		$message = "You don't have permission.";
 		if($user->in_group('student')){
 			$repairs = User::find($user->id)->repairs()->order_by('created_at', 'desc')->paginate();
 		}elseif($user->in_group('teacher')){
@@ -13,7 +14,6 @@ class Repairs_Controller extends Base_Controller {
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
 		}
 		$repair_status = ["pending", "checking", "fixed"];
-		$message = "You don't have permission.";
 		return View::make('repairs/index', array('repairs'=>$repairs, 'repair_status'=> $repair_status));
 	}
 

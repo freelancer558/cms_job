@@ -33,10 +33,12 @@
               </ul>
           </div><!--/.nav-collapse -->
           @section('post_navigation')
-          @if(isset($user) && Sentry::user()->in_group('superuser'))
+          @if(Request::route()->controller == 'users' && Sentry::user()->in_group('superuser'))
             @include('shared.import_user')
           @elseif(Request::route()->controller == 'products' && Sentry::user()->in_group('superuser'))
             @include('shared.import_product')
+          @elseif(Request::route()->controller == 'chemicals' && Sentry::user()->in_group('superuser'))
+            @include('shared.import_chemical')
           @endif
           @yield_section
         </div>
@@ -55,6 +57,8 @@
     @section('form_modals')
     @if(Sentry::check() && Request::route()->controller == 'products')
       @include('shared.upload_modal')
+    @elseif(Sentry::check() && Request::route()->controller == 'chemicals')
+      @include('shared.addtype_modal')
     @endif
     @yield_section
   </body>

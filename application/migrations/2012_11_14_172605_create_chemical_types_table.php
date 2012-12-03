@@ -12,10 +12,10 @@ class Create_Chemical_Types_Table {
 		Schema::create('chemical_types', function($table)
 		{
 			$table->engine = 'InnoDB';
-	    $table->increments('id');
-	    $table->string('name');
-	    
-	    $table->timestamps();	
+		    $table->increments('id');
+		    $table->string('name');
+		    
+		    $table->timestamps();	
 		});
 	}
 
