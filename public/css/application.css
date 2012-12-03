@@ -4,3 +4,15 @@
 .no-padding{
 	padding: 0;
 }
+.controls {
+	position: relative;
+}
+.ui-datepicker-trigger{
+	position: absolute;
+	bottom: 8px;
+	margin-left: -20px;
+}
+.center {
+	float: none;
+	margin: 0 auto;
+}

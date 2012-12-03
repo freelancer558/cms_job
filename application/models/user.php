@@ -21,6 +21,6 @@ class User extends Appmodel {
 	
 	public function photos()
 	{
-		return $this->has_one('Photo');
+		return $this->has_many('Photo');
 	}
 }

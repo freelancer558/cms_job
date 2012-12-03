@@ -169,7 +169,7 @@ return array(
 		'File'       	=> 'Laravel\\File',
 		'Filter'     	=> 'Laravel\\Routing\\Filter',
 		// 'Form'       	=> 'Laravel\\Form',
-		// 'Paginator'  	=> 'Laravel\\Paginator',
+		'Paginator'  	=> 'Laravel\\Paginator',
 		'Hash'       	=> 'Laravel\\Hash',
 		'HTML'       	=> 'Laravel\\HTML',
 		'Input'      	=> 'Laravel\\Input',

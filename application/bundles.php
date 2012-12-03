@@ -44,8 +44,8 @@ return array(
 	),
 	'activerecord' => array('auto' => true),
 	'sentry' => array(
-    'location' => 'path: ' . $paths['bundle'] . '/sentry',
-    'auto'     => true,
+	    'location' => 'path: '.$paths['bundle'].'/sentry',
+	    'auto'     => true,
 	),
 	'formly' => array(
     'autoloads' => array(

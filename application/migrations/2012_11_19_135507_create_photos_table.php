@@ -15,11 +15,11 @@ class Create_Photos_Table {
 			$table->string('description');
 
 			$table->integer('chemical_id')->unsigned();
-	    $table->foreign('chemical_id')->references('id')->on('chemicals')->on_delete('restrict');
+	    	$table->foreign('chemical_id')->references('id')->on('chemicals')->on_delete('restrict');
 
 			$table->integer('user_id')->unsigned();
-	    $table->foreign('user_id')->references('id')->on('users')->on_delete('restrict');	    
-	    $table->timestamps();
+		    $table->foreign('user_id')->references('id')->on('users')->on_delete('restrict');	    
+		    $table->timestamps();
 		});
 	}
 
