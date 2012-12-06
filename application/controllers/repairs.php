@@ -33,7 +33,7 @@ class Repairs_Controller extends Base_Controller {
 				$product->sum = $product->sum + 1;	
 				$product->save();
 			}
-			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
+			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}else{
 			if($status_repair->title == 'fixed'){
 				$status_repair->title = $params['title'];
@@ -46,7 +46,7 @@ class Repairs_Controller extends Base_Controller {
 				$product->sum = $product->sum + 1;	
 				$product->save();
 			}
-			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Create successfull', 200);
+			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}
 	}
 

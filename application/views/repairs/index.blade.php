@@ -66,7 +66,7 @@ $(document).ready(function(){
 		var status = $(':selected', this).text();
 		var repair_id= $(this).closest('tr').attr('data-repair-id');
 		$.post('/repairs', {title: status, repair_id: repair_id}, function(result){
-			console.log(result);
+			alert(result);
 		})
 	});
 	$('a[data-confirm]').bind('click', function(e){
