@@ -1,14 +1,12 @@
-@layout('layouts/application')
-
-@section('navigation')
-@parent
-<li><a href="about">About</a></li>
-@endsection
+@layout('shared/user_header')
 
 @section('content')
-<div class="hero-unit">
-    <div class="row">
-        <div class="span6 center">
+<div class="row">
+    <div class="span3">
+        @include('shared/user_sidebar')
+    </div>
+    <div class="span8">
+        <div class="well center">
             <h2>Repairing Form</h2>
             {{ $form->open() }}
                 {{ $form->text('name', 'Name', $user['metadata']['first_name'].' '.$user['metadata']['last_name'], array('readonly'=>true)) }}
