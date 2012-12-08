@@ -35,7 +35,7 @@
                     <td>{{$requisition->created_at}}</td>
                     <td>
                     	@if(Sentry::user()->in_group('teacher'))
-                    		<?php $status = StatusRequirement::where_requirement_id($requisition->status_requirement->requirement_id)->first(); ?>
+                    		<?php $status = StatusRequirement::find($requisition->status_requirement->id); ?>
 	                    	{{ Form::select('status', $status_requirements, array_search($status->name, $status_requirements)) }}
 	                    	<a href="/requirements/{{$requisition->id}}/delete" class="btn btn-danger">Delete</a>
                     	@endif

@@ -15,13 +15,11 @@
       @endunless
     </ul>
   </div><!--/.nav-collapse -->
-  @section('post_navigation')
-    @if(Request::route()->controller == 'users')
-      @include('shared.import_user')
-    @elseif(Request::route()->controller == 'products')
-      @include('shared.import_product')
-    @elseif(Request::route()->controller == 'chemicals')
-      @include('shared.import_chemical')
-    @endif
-  @yield_section
+  @if(Request::route()->controller == 'users')
+    @include('shared.import_user')
+  @elseif(Request::route()->controller == 'products')
+    @include('shared.import_product')
+  @elseif(Request::route()->controller == 'chemicals')
+    @include('shared.import_chemical')
+  @endif
 @endsection

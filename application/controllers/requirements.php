@@ -46,7 +46,7 @@ class Requirements_Controller extends Base_Controller {
 				$chemical->sum -= $params['total'];
 				$chemical->save();
 
-				$sr = new StatusRequirement(array('name' => 'pending'));
+				$sr = new StatusRequirement(array('name' => 'pending', 'user_id' => $inputs['user_id']));
 				if(!$requisition->status_requirement()->insert($sr)){
 					$data['errors'] = 'Cannot save please check again.';	
 				}
@@ -103,5 +103,16 @@ class Requirements_Controller extends Base_Controller {
 		$status_requirement = StatusRequirement::find((int)$params['id']);		
 		$status_requirement->name = $params['title'];
 		return !$status_requirement->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
+	}
+
+	public function get_approved()
+	{
+		$status = StatusRequirement::where_name('approved')->paginate();
+		$current_user = Sentry::user();
+		return View::make('requirements.approved', array(
+			'requisitions' 	=> $status,
+			'current_user' 	=> $current_user,
+		));
+
 	}
 }

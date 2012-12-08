@@ -49,7 +49,7 @@
         @include('shared.upload_modal')
       @elseif(Sentry::check() && Request::route()->controller == 'chemicals')
         @include('shared.addtype_modal')
-      @elseif(Sentry::check() && Request::route()->controller == 'requirements')
+      @elseif(Sentry::check() && !Sentry::user()->in_group('superuser') && Request::route()->controller == 'requirements')
         @include('shared.add_requisition_modal')
       @endif
     @yield_section

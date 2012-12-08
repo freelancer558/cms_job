@@ -37,6 +37,7 @@ Route::get('/requirements', 'requirements@index');
 Route::get('/requirements/(:num)/delete', 'requirements@destroy');
 Route::post('/requirements/requisition', 'requirements@requisition');
 Route::post('/requirements/update_status', 'requirements@update_status');
+Route::get('/requirements/approved', 'requirements@approved');
 
 Route::controller(Controller::detect());
 /*

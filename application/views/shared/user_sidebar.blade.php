@@ -4,6 +4,7 @@
     <!-- <li class="nav-header"><a href="#">Chemicals</a></li> -->
     @if(Sentry::user()->in_group('superuser'))
     	<li class="nav-header">{{HTML::link('/chemicals', 'Chemicals')}}</li>
+    	<li class="nav-header">{{HTML::link('/requirements/approved', 'Requisition')}}</li>
 	    <li class="nav-header">{{HTML::link('/products', 'Products')}}</li>
 	    <li class="nav-header">{{HTML::link('/repairs', 'Repairs')}}</li>
 	    <li class="nav-header">{{HTML::link('/users', 'Users')}}</li>
