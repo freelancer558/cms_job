@@ -22,29 +22,19 @@
       <div class="navbar-inner">
         <div class="container">
           {{ HTML::link('/home', 'SCBL', array('class'=>'brand')) }}
-          <div class="nav-collapse">
-              <ul class="nav">
-                  @section('navigation')
-                  @unless(Sentry::check())
-                    <li class="<?php if(Request::route()->controller_action == 'index') echo 'active';?>"><a href="/home">Home</a></li>
-                    <li class="<?php if(Request::route()->controller_action == 'login') echo 'active';?>">{{HTML::link('/users/login', 'Login')}}</li>
-                  @endunless
-                  @yield_section
-              </ul>
-          </div><!--/.nav-collapse -->
-          @section('post_navigation')
-          @if(Request::route()->controller == 'users' && Sentry::user()->in_group('superuser'))
-            @include('shared.import_user')
-          @elseif(Request::route()->controller == 'products' && Sentry::user()->in_group('superuser'))
-            @include('shared.import_product')
-          @elseif(Request::route()->controller == 'chemicals' && Sentry::user()->in_group('superuser'))
-            @include('shared.import_chemical')
-          @endif
+          @section('user_navigation')
+            @if(Sentry::user()->in_group('superuser'))
+              @include('shared.admin_menu')
+            @elseif(Sentry::user()->in_group('teacher'))
+              <!-- @include('shared.staff_menu') -->
+              @include('shared.user_menu')
+            @else
+              @include('shared.user_menu')
+            @endif
           @yield_section
         </div>
       </div>
     </div>
-
     <div class="container">
       @include('shared.status')
       @yield('content')
@@ -55,11 +45,13 @@
     </div> <!-- /container -->
     
     @section('form_modals')
-    @if(Sentry::check() && Request::route()->controller == 'products')
-      @include('shared.upload_modal')
-    @elseif(Sentry::check() && Request::route()->controller == 'chemicals')
-      @include('shared.addtype_modal')
-    @endif
+      @if(Sentry::check() && Request::route()->controller == 'products')
+        @include('shared.upload_modal')
+      @elseif(Sentry::check() && Request::route()->controller == 'chemicals')
+        @include('shared.addtype_modal')
+      @elseif(Sentry::check() && Request::route()->controller == 'requirements')
+        @include('shared.add_requisition_modal')
+      @endif
     @yield_section
   </body>
 </html>

@@ -12,10 +12,10 @@ class Create_Requirements_Table {
 		Schema::create('requirements', function($table)
 		{
 			$table->engine = 'InnoDB';
-	    $table->increments('id');
-	    $table->date('date');
+		    $table->increments('id');
+		    $table->date('date');
 
-	    $table->timestamps();	
+		    $table->timestamps();	
 		});
 	}
 

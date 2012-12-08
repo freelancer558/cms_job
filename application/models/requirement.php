@@ -11,7 +11,7 @@ class Requirement extends Appmodel {
 
 	public function status_requirement()
 	{
-		return $this->has_one('Status_Requirement');
+		return $this->has_one('StatusRequirement');
 	}
 
 }

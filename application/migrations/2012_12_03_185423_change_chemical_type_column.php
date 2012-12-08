@@ -26,7 +26,7 @@ class Change_Chemical_Type_Column {
 	public function down()
 	{
 		Schema::table('chemical_types', function($table){
-			$table->drop_table('title');
+			$table->drop_column('title');
 		});
 
 		Schema::table('chemical_types', function($table){

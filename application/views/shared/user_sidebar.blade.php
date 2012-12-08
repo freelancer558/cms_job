@@ -9,9 +9,11 @@
 	    <li class="nav-header">{{HTML::link('/users', 'Users')}}</li>
 	@elseif(Sentry::user()->in_group('teacher'))
 		<li class="nav-header">{{ HTML::link('/users/'.Sentry::user()->id, 'Account Informations') }}</li>
+		<li class="nav-header">{{HTML::link('/requirements', 'Requisition')}}</li>
 		<li class="nav-header">{{HTML::link('/repairs', 'Repairs')}}</li>
 	@else
 		<li class="nav-header">{{ HTML::link('/users/'.Sentry::user()->id, 'Account Informations') }}</li>
+		<li class="nav-header">{{HTML::link('/requirements', 'Requisition')}}</li>
 		<li class="nav-header">{{HTML::link('/repairs', 'Repairs')}}</li>
     @endif
   </ul>
