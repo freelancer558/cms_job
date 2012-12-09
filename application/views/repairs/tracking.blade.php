@@ -6,7 +6,7 @@
         @include('shared/user_sidebar')
     </div>
     <div class="span9">
-        <h1>Tracking</h1>
+        <h1>Tracking ({{count($repairs->results)}}) time(s)</h1>
         <div class="well" style="text-align: center">
         	<table class="table table-striped">
         		<thead>
