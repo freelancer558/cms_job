@@ -13,13 +13,13 @@ class Create_Products_Table {
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->string('name');
-	    $table->integer('sum');
-	    $table->string('data');
-	    $table->string('add');
-	    $table->string('model');
-	    $table->date('pay');
+		    $table->integer('sum');
+		    $table->string('data');
+		    $table->string('add');
+		    $table->string('model');
+		    $table->date('pay');
 
-	    $table->timestamps();
+		    $table->timestamps();
 		});
 	}
 

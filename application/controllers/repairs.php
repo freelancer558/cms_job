@@ -3,16 +3,20 @@
 class Repairs_Controller extends Base_Controller {
 
 	public function action_index()
-	{	$user = Sentry::user();
+	{	
+		$user = Sentry::user();
+		$message = "You don't have permission.";
 		if($user->in_group('student')){
+			$repair_status = ["pending", "reject", "checking", "fixed"];
 			$repairs = User::find($user->id)->repairs()->order_by('created_at', 'desc')->paginate();
 		}elseif($user->in_group('teacher')){
-			$repairs = User::find($user->id)->repairs()->order_by('created_at', 'desc')->paginate();
+			$repair_status = ["pending", "reject", "accept"];
+			$repairs = Repair::order_by('created_at', 'desc')->paginate();
 		}else{
+			$repair_status = ["pending", "reject", "checking", "fixed"];
 			$repairs = Repair::order_by('created_at', 'desc')->paginate();
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
 		}
-		$repair_status = ["pending", "reject", "checking", "fixed"];
 		$message = "You don't have permission.";
 		return View::make('repairs/index', array('repairs'=>$repairs, 'repair_status'=> $repair_status));
 	}

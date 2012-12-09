@@ -332,7 +332,7 @@ class Users_Controller extends Base_Controller
     $inputs       = array(
       'name'      => $params['name'],
       'date'      => $params['date'],
-      'product_id'=> (int)$params['product'],
+      'product_id'=> (int)$params['field_product_id'],
       'detail'    => $params['detail'],
       'setup_place'=>$params['setup_place'],
       'user_id'   => Sentry::user()->id,

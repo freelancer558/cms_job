@@ -3,10 +3,10 @@
 class Chemical extends Appmodel {
 
 	public static $timestamps = true;
-	
-	public function chemical_types()
+
+	public function chemicals_chemical_type()
 	{
-		return $this->has_many_and_belongs_to('Chemical_Type');
+		return $this->has_one('ChemicalsChemicalType');
 	}
 	
 	public function requirements()

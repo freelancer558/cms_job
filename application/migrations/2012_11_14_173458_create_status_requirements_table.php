@@ -12,13 +12,13 @@ class Create_Status_Requirements_Table {
 		Schema::create('status_requirements', function($table)
 		{
 			$table->engine = 'InnoDB';
-	    $table->increments('id');
-	    $table->string('name');
-	   	
-	   	$table->integer('requirement_id')->unsigned();
-	    $table->foreign('requirement_id')->references('id')->on('requirements')->on_delete('restrict');
+		    $table->increments('id');
+		    $table->string('name');
+		   	
+		   	$table->integer('requirement_id')->unsigned();
+		    $table->foreign('requirement_id')->references('id')->on('requirements')->on_delete('restrict');
 
-	    $table->timestamps();	
+		    $table->timestamps();	
 		});
 	}
 

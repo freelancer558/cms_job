@@ -13,12 +13,12 @@ class Create_Chemicals_Table {
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->string('name');
-	    $table->integer('sum');
-	    $table->date('mfd');
-	    $table->date('exp');
-	    $table->string('add');
+		    $table->integer('sum');
+		    $table->date('mfd');
+		    $table->date('exp');
+		    $table->string('add');
 
-	    $table->timestamps();
+		    $table->timestamps();
 		});
 	}
 

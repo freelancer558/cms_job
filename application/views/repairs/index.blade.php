@@ -38,10 +38,12 @@
 	        		<td>
 	        			@if(Sentry::user()->in_group('superuser') && $repair->fix_cost <= 0)
 		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
+		        		@elseif(Sentry::user()->in_group('teacher') && $repair->fix_cost <= 0)
+		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
 		        		@else
 		        			@if($status->title == 'fixed')
 		        				<span class="label label-success">{{$status->title}}</span>
-		        			@elseif($status->title == 'checking')
+		        			@elseif($status->title == 'checking' || $status->title == 'accept')
 		        				<span class="label label-warning">{{$status->title}}</span>
 		        			@elseif($status->title == 'reject')
 		        				<span class="label label-important">{{$status->title}}</span>
@@ -51,13 +53,13 @@
 	        			@endif
 	        		</td>
 	        		<td>
-	        			<input type="text" name="fix_cost" class="fix_cost" style="width:60px;vertical-align:top;" readonly="true" value="{{$repair->fix_cost}}">
+	        			<input type="text" name="fix_cost" class="fix_cost" style="width:50px;vertical-align:top;" readonly="true" value="{{$repair->fix_cost}}">
 	        			<a href="#" class="btn add_fix_cost">Add</a>
 	        		</td>
 	        	</tr>
 	        	@empty
 	        	<tr>
-	        		<td colspan="6">No product repair.</td>
+	        		<td colspan="8">No product repair.</td>
 	        	</tr>
 	        	@endforelse
         		</tbody>
