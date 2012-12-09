@@ -41,6 +41,8 @@
 		        				<span class="label label-success">{{$status->title}}</span>
 		        			@elseif($status->title == 'checking')
 		        				<span class="label label-warning">{{$status->title}}</span>
+		        			@elseif($status->title == 'reject')
+		        				<span class="label label-important">{{$status->title}}</span>
 		        			@else
 		        				<span class="label">{{$status->title}}</span>
 		        			@endif
@@ -75,10 +77,15 @@ $(document).ready(function(){
 	$('select[name=status]').change(function(){
 		var status = $(':selected', this).text();
 		var repair_id= $(this).closest('tr').attr('data-repair-id');
-		if(status=='fixed'){
+		if(status == 'fixed'){
 			$(this).closest('tr').find('.fix_cost').attr('readonly', false);	
 		}else{
 			$(this).closest('tr').find('.fix_cost').attr('readonly', true);	
+		}
+		if(status != "fixed"){
+			$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: 0}, function(result){
+				alert(result);
+			});
 		}
 	});
 	$('a[data-confirm]').bind('click', function(e){
@@ -90,9 +97,13 @@ $(document).ready(function(){
     	var fix_cost = $(this).closest('tr').find('.fix_cost').val();
     	var status = $(this).closest('tr').find('select :selected').text();
     	var repair_id= $(this).closest('tr').attr('data-repair-id');
-    	$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: fix_cost}, function(result){
-			alert(result);
-		});
+    	if(status == "fixed"){
+	    	$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: fix_cost}, function(result){
+				alert(result);
+			});
+    	}else{
+    		alert('Cannot add because status is not fixed');
+    	}
     });
 });
 </script>
