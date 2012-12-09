@@ -50,4 +50,11 @@ class Repairs_Controller extends Base_Controller {
 		}
 	}
 
+	public function action_tracking()
+	{
+		$params = Request::route()->parameters;		
+		$id 	= (int)$params[0];
+		$repairs = Repair::where_product_id($id)->paginate();
+		return View::make('repairs.tracking', array('repairs'=>$repairs));
+	}
 }

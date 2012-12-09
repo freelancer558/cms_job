@@ -29,6 +29,7 @@
 	        		<td>
 	        			{{ HTML::link('#', 'Detail', array('class'=>'btn btn-info no-margin', 'style'=>'vertical-align: top;', 'rel' => 'popover', 'data-placement' => 'top',  'data-content' => $repair->detail,  'data-original-title' => 'Details')) }}
 	        			{{ HTML::link('/repairs/'.$repair->id.'/delete', 'Delete', array('class'=>'btn btn-danger no-margin', 'style'=>'vertical-align: top;')) }}
+	        			{{ HTML::link('/repairs/'.$repair->product_id.'/tracking', 'Tracking', array('class'=>'btn', 'style'=>'vertical-align: top;')) }}
 	        		</td>
 	        		<td>
 		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>

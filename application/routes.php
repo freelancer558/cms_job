@@ -61,6 +61,7 @@ Route::get('/products/(:all)/detail', 'products@detail');
 Route::get('/repairs', 'repairs@index');
 Route::get('/repairs/(:num)/delete', 'repairs@destroy');
 Route::post('/repairs(:all)', 'repairs@create');
+Route::get('/repairs/(:num)/tracking', 'repairs@tracking');
 
 Route::controller(Controller::detect());
 /*
