@@ -15,10 +15,6 @@
                         <td>{{ $product->name }}</td>
                     </tr>
                     <tr>
-                        <td>Total</td>
-                        <td>{{ $product->sum }}</td>
-                    </tr>
-                    <tr>
                         <td>Data</td>
                         <td>{{ $product->data }}</td>
                     </tr>
