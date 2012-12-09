@@ -28,24 +28,8 @@ class Repairs_Controller extends Base_Controller {
 		$repair = Repair::find((int)$params['repair_id']);
 		if(empty($status_repair)){
 			$status_repair = new StatusRepair($inputs);
-			if($params['title'] == 'fixed'){
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum + 1;	
-				$product->save();
-			}
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}else{
-			if($status_repair->title == 'fixed'){
-				$status_repair->title = $params['title'];
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum - 1;	
-				$product->save();
-			}elseif($params['title'] == 'fixed'){
-				$status_repair->title = $params['title'];
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum + 1;	
-				$product->save();
-			}
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}
 	}

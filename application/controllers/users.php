@@ -360,9 +360,6 @@ class Users_Controller extends Base_Controller
           'title'   => 'pending',
         ));
         $repair->status_repair()->insert($status_repair);
-        $product = Product::find((int)$params['product']);
-        $product->sum = $product->sum - 1;
-        $product->save();
       }
       else
       {
