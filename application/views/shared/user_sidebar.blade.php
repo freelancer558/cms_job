@@ -1,5 +1,5 @@
 <div class="well sidebar-nav">
-  <h4>Menu</h4>
+  <h4>Menu <span class="label">{{Sentry::user()->groups()[0]["name"]}}</span></h4>
   <ul class="nav nav-list">
     <!-- <li class="nav-header"><a href="#">Chemicals</a></li> -->
     @if(Sentry::user()->in_group('superuser'))
