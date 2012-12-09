@@ -56,7 +56,7 @@ Route::get('/products/(:num)', 'products@show');
 Route::get('/products/(:num)/edit', 'products@edit');
 Route::post('/products/(:num)/edit', 'products@edit');
 Route::get('/products/(:num)/delete', 'products@destroy');
-Route::get('/products/(:num)/detail', 'products@detail');
+Route::get('/products/(:all)/detail', 'products@detail');
 
 Route::get('/repairs', 'repairs@index');
 Route::get('/repairs/(:num)/delete', 'repairs@destroy');

@@ -14,14 +14,7 @@
 $(document).ready(function(){
   $('#field_disburse').datetimepicker({
     dateFormat: 'dd/mm/yy',
-  });
-  
-  // $.get('/products/search_by_serial', function(result){
-  //   $( "#field_serial_no" ).autocomplete({
-  //     source: result
-  //   });
-  // }, 'json');
-    
+  });    
 });
 </script>
 @endsection

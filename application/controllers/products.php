@@ -233,8 +233,8 @@ class Products_Controller extends Base_Controller
 
 	public function get_detail()
 	{
-		$id = (int)Request::route()->parameters[0];
-		$product = Product::find($id);
+		$serial = Request::route()->parameters[0];
+		$product = Product::where_serial_no($serial)->first();
 		return Response::json($product, 200);
 	}
 
