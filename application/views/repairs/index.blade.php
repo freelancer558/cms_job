@@ -28,12 +28,14 @@
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
 	        		<td>
+		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>
 	        			{{ HTML::link('#', 'Detail', array('class'=>'btn btn-info no-margin', 'style'=>'vertical-align: top;', 'rel' => 'popover', 'data-placement' => 'top',  'data-content' => $repair->detail,  'data-original-title' => 'Details')) }}
 	        			{{ HTML::link('/repairs/'.$repair->product_id.'/tracking', 'Tracking', array('class'=>'btn', 'style'=>'vertical-align: top;')) }}
-	        			<!-- {{ HTML::link('/repairs/'.$repair->id.'/delete', 'Delete', array('class'=>'btn btn-danger no-margin', 'style'=>'vertical-align: top;')) }} -->
+	        			@if($status->title == 'pending')
+	        				{{ HTML::link('/repairs/'.$repair->id.'/delete', 'Delete', array('class'=>'btn btn-danger no-margin', 'style'=>'vertical-align: top;')) }}
+	        			@endif
 	        		</td>
 	        		<td>
-		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>
 	        			@if(Sentry::user()->in_group('superuser') && $repair->fix_cost <= 0)
 		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
 		        		@else
