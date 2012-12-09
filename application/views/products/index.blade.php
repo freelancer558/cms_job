@@ -15,7 +15,6 @@
                         <th>Name</th>
                         <th>Model</th>
                         <th>Data</th>
-                        <th>Total</th>
                         <th>Disburse</th>
                         <th>Created at</th>
                     </tr>
@@ -27,7 +26,6 @@
                     <td>{{$product->name}}</td>
                     <td>{{$product->model}}</td>
                     <td>{{$product->data}}</td>
-                    <td>{{$product->sum}}</td>
                     <td>{{$product->disburse}}</td>
                     <td>{{$product->created_at}}</td>
                     <td>

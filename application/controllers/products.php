@@ -34,7 +34,6 @@ class Products_Controller extends Base_Controller
 	    // return print_r($params);
 	    $inputs      = array(
 	      'name'    => $params["name"],
-	      'sum'  	=> $params['sum'],
 	      'data' 	=> $params['data'],
 	      'model'  	=> $params['model'],
 	      'serial_no'=>$params['serial_no'],
@@ -43,11 +42,10 @@ class Products_Controller extends Base_Controller
 	    //return print_r($inputs);
 	    $rules = array(
 	      'name' 	=> 'required',
-	      'sum'  	=> 'required',
 	      'data' 	=> 'required',
 	      'model'  	=> 'required', 
 	      'disburse'=> 'required',
-	      'serial_no'=>'required',
+	      'serial_no'=>'required|unique:products',
 	    );
 	    $validation = Validator::make($inputs, $rules);
 
@@ -121,7 +119,6 @@ class Products_Controller extends Base_Controller
 	    $params       = Input::all();
 	    $inputs      = array(
 	      'name'    => $params["name"],
-	      'sum'  	=> $params['sum'],
 	      'data' 	=> $params['data'],
 	      'model'  	=> $params['model'],
 	      'disburse'=> $params['disburse'],
@@ -130,7 +127,6 @@ class Products_Controller extends Base_Controller
 	    //return print_r($inputs);
 	    $rules = array(
 	      'name' 	=> 'required',
-	      'sum'  	=> 'required',
 	      'data' 	=> 'required',
 	      'model'  	=> 'required', 
 	      'disburse'=> 'required',
@@ -162,7 +158,6 @@ class Products_Controller extends Base_Controller
 	      $product = Product::find($id);
 	      foreach(array_keys($inputs) as $index => $key){
 	      	if($key == 'name') $product->name = $inputs["name"];
-	      	if($key == 'sum') $product->sum = $inputs["sum"];
 	      	if($key == 'data') $product->data = $inputs["data"];
 	      	if($key == 'model') $product->model = $inputs["model"];
 	      	if($key == 'disburse') $product->disburse = $inputs["disburse"];
@@ -238,8 +233,18 @@ class Products_Controller extends Base_Controller
 
 	public function get_detail()
 	{
-		$id = (int)Request::route()->parameters[0];
-		$product = Product::find($id);
+		$serial = Request::route()->parameters[0];
+		$product = Product::where_serial_no($serial)->first();
 		return Response::json($product, 200);
+	}
+
+	public function get_search_by_serial()
+	{
+		$products = Product::all();
+		$serials = [];
+		foreach($products as $product){
+			if(!empty($product->serial_no)) array_push($serials, $product->serial_no);
+		}
+		return Response::json($serials, 200);	
 	}
 }

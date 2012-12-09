@@ -14,15 +14,17 @@ Route::get('/users/(:num)/delete', 'users@destroy');
 Route::get('/users/repairing', 'users@repairing');
 
 Route::get('/products', 'products@index');
+Route::get('/products/search_by_serial', 'products@search_by_serial');
 Route::get('/products/(:num)', 'products@show');
 Route::get('/products/(:num)/edit', 'products@edit');
 Route::post('/products/(:num)/edit', 'products@edit');
 Route::get('/products/(:num)/delete', 'products@destroy');
-Route::get('/products/(:num)/detail', 'products@detail');
+Route::get('/products/(:all)/detail', 'products@detail');
 
 Route::get('/repairs', 'repairs@index');
 Route::get('/repairs/(:num)/delete', 'repairs@destroy');
 Route::post('/repairs(:all)', 'repairs@create');
+Route::get('/repairs/(:num)/tracking', 'repairs@tracking');
 
 Route::get('/chemicals', 'chemicals@index');
 Route::get('/chemicals/new', 'chemicals@new');

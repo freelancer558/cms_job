@@ -13,7 +13,8 @@ class Repairs_Controller extends Base_Controller {
 			$repairs = Repair::order_by('created_at', 'desc')->paginate();
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
 		}
-		$repair_status = ["pending", "checking", "fixed"];
+		$repair_status = ["pending", "reject", "checking", "fixed"];
+		$message = "You don't have permission.";
 		return View::make('repairs/index', array('repairs'=>$repairs, 'repair_status'=> $repair_status));
 	}
 
@@ -28,24 +29,11 @@ class Repairs_Controller extends Base_Controller {
 		$repair = Repair::find((int)$params['repair_id']);
 		if(empty($status_repair)){
 			$status_repair = new StatusRepair($inputs);
-			if($params['title'] == 'fixed'){
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum + 1;	
-				$product->save();
-			}
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}else{
-			if($status_repair->title == 'fixed'){
-				$status_repair->title = $params['title'];
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum - 1;	
-				$product->save();
-			}elseif($params['title'] == 'fixed'){
-				$status_repair->title = $params['title'];
-				$product = Product::find($repair->product_id);
-				$product->sum = $product->sum + 1;	
-				$product->save();
-			}
+			$status_repair->title = $params['title'];
+			$repair->fix_cost = $params['fix_cost'];
+			$repair->save();
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}
 	}
@@ -66,4 +54,11 @@ class Repairs_Controller extends Base_Controller {
 		}
 	}
 
+	public function action_tracking()
+	{
+		$params = Request::route()->parameters;		
+		$id 	= (int)$params[0];
+		$repairs = Repair::where_product_id($id)->paginate();
+		return View::make('repairs.tracking', array('repairs'=>$repairs));
+	}
 }
