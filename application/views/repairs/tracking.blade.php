@@ -24,9 +24,7 @@
 	        		<td>{{ Sentry::user($repair->user_id)->metadata['student_code'] }}</td>
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
-	        		<td>
-	        		
-	        		</td>
+	        		<td>{{ $repair->fix_cost }}</td>
 	        		<td>
 		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>
 

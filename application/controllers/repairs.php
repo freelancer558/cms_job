@@ -30,6 +30,9 @@ class Repairs_Controller extends Base_Controller {
 			$status_repair = new StatusRepair($inputs);
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}else{
+			$status_repair->title = $params['title'];
+			$repair->fix_cost = $params['fix_cost'];
+			$repair->save();
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}
 	}
