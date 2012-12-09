@@ -51,6 +51,7 @@ Route::get('/users/(:num)/delete', 'users@destroy');
 Route::get('/users/repairing', 'users@repairing');
 
 Route::get('/products', 'products@index');
+Route::get('/products/search_by_serial', 'products@search_by_serial');
 Route::get('/products/(:num)', 'products@show');
 Route::get('/products/(:num)/edit', 'products@edit');
 Route::post('/products/(:num)/edit', 'products@edit');
