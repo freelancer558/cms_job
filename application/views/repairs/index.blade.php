@@ -11,8 +11,8 @@
         	<table class="table table-striped">
         		<thead>
         			<th></th>
-        			<th>Name</th>
-        			<th>Product Name</th>
+        			<th>Student Code</th>
+        			<th>Serial no</th>
                     <th>Setup Place</th>
         			<th>Repairing Date</th>
         			<th></th>
@@ -22,8 +22,8 @@
 	        	@forelse($repairs->results as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
 	        		<td></td>
-	        		<td>{{ $repair->name }}</td>
-	        		<td>{{ Product::find((int)$repair->product_id)->name }}</td>
+	        		<td>{{ Sentry::user($repair->user_id)->metadata['student_code'] }}</td>
+	        		<td>{{ Product::find((int)$repair->product_id)->serial_no }}</td>
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
 	        		<td>
