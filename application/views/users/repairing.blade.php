@@ -10,6 +10,7 @@
             <h2>Repairing Form</h2>
             {{ $form->open() }}
                 {{ $form->text('name', 'Name', $user['metadata']['first_name'].' '.$user['metadata']['last_name'], array('readonly'=>true)) }}
+                {{ $form->text('metadata.student_code', 'Student Code', $user['metadata']['student_code'].' '.$user['metadata']['student_code'], array('readonly'=>true)) }}
                 {{ $form->text('date', 'Repair date') }}
                 {{ $form->text('setup_place', 'Setup Place') }}
                 <div class="control-group">
@@ -34,6 +35,7 @@
 
                 <div class="control-group">
                     <div class="controls">
+                        <input type="hidden" name="field_product_id" id="field_product_id">
                         {{ $form->submit_primary('Submit') }}
                     </div>
                 </div>
@@ -58,10 +60,12 @@ $(document).ready(function(){
                 // console.log($product);
                 $('#field_product_model').val($product.model);
                 $('#field_product_name').val($product.name);    
+                $('#field_product_id').val($product.id);
             }, 'json');
         }else{
             $('#field_product_model').val('');
             $('#field_product_name').val('');
+            $('#field_product_id').val('');
         }
     });
     
