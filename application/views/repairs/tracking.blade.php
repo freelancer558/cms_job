@@ -6,7 +6,7 @@
         @include('shared/user_sidebar')
     </div>
     <div class="span9">
-        <h1>Tracking ({{count($repairs->results)}}) time(s)</h1>
+        <h1>Repairing ({{count($repairs->results)}}) time(s)</h1>
         <div class="well" style="text-align: center">
         	<table class="table table-striped">
         		<thead>
@@ -20,8 +20,8 @@
         		<tbody>
 	        	@forelse($repairs->results as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
-	        		<td>{{ Sentry::user($repair->user_id)->metadata['student_code'] }}</td>
-	        		<td>{{ Sentry::user($repair->user_id)->metadata['telephone'] }}</td>	        		
+	        		<td>{{ Sentry::user((int)$repair->user_id)->metadata['student_code'] }}</td>
+	        		<td>{{ Sentry::user((int)$repair->user_id)->metadata['telephone'] }}</td>	        		
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
 	        		<td>{{ $repair->fix_cost }}</td>
