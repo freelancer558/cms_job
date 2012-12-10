@@ -17,7 +17,9 @@
         			<th>Repairing Date</th>
         			<th></th>
         			<th>Status</th>
-        			<th>Fix Cost</th>
+        			@if(Sentry::user()->in_group('superuser'))
+        				<th>Fix Cost</th>
+        			@endif
         		</thead>
         		<tbody>
 	        	@forelse($repairs->results as $repair)
@@ -52,10 +54,12 @@
 		        			@endif
 	        			@endif
 	        		</td>
+	        		@if(Sentry::user()->in_group('superuser'))
 	        		<td>
 	        			<input type="text" name="fix_cost" class="fix_cost" style="width:50px;vertical-align:top;" readonly="true" value="{{$repair->fix_cost}}">
 	        			<a href="#" class="btn add_fix_cost">Add</a>
 	        		</td>
+	        		@endif
 	        	</tr>
 	        	@empty
 	        	<tr>

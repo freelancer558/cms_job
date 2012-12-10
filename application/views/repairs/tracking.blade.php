@@ -10,18 +10,18 @@
         <div class="well" style="text-align: center">
         	<table class="table table-striped">
         		<thead>
-        			<th></th>
         			<th>Student Code</th>
+        			<th>Telephone</th>
                     <th>Setup Place</th>
         			<th>Repairing Date</th>
         			<th>Fix Cost</th>
-        			<th></th>
+        			<th>Status</th>
         		</thead>
         		<tbody>
 	        	@forelse($repairs->results as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
-	        		<td></td>
 	        		<td>{{ Sentry::user($repair->user_id)->metadata['student_code'] }}</td>
+	        		<td>{{ Sentry::user($repair->user_id)->metadata['telephone'] }}</td>	        		
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
 	        		<td>{{ $repair->fix_cost }}</td>
