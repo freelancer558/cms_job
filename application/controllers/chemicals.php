@@ -195,4 +195,21 @@ class Chemicals_Controller extends Base_Controller {
 	      return Redirect::to('chemicals/index')->with_input()->with('status_success', $data['success']);
 	    }
 	}
+
+	public function get_search_by_name()
+	{
+		$chemicals = Chemical::all();
+		$name = [];
+		foreach($chemicals as $chemical){
+			if(!empty($chemical->name)) $name[$chemical->id] = $chemical->name;
+		}
+		return Response::json($name, 200);	
+	}
+
+	public function get_info()
+	{
+		$id = (int)Request::route()->parameters[0];
+		$chemical = Chemical::find($id);
+		return Response::json($chemical, 200);		
+	}
 }

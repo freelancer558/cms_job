@@ -28,12 +28,14 @@ Route::get('/repairs/(:num)/tracking', 'repairs@tracking');
 
 Route::get('/chemicals', 'chemicals@index');
 Route::get('/chemicals/new', 'chemicals@new');
+Route::get('/chemicals/search_by_name', 'chemicals@search_by_name');
 Route::post('/chemicals/addtype', 'chemicals@addtype');
 Route::get('/chemicals/(:num)', 'chemicals@show');
 Route::get('/chemicals/(:num)/edit', 'chemicals@edit');
 Route::post('/chemicals/(:num)/edit', 'chemicals@edit');
 Route::get('/chemicals/(:num)/delete', 'chemicals@destroy');
 Route::get('/chemicals/(:num)/detail', 'chemicals@detail');
+Route::get('/chemicals/(:num)/info', 'chemicals@info');
 
 Route::get('/requirements', 'requirements@index');
 Route::get('/requirements/(:num)/delete', 'requirements@destroy');

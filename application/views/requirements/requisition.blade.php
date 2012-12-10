@@ -14,9 +14,9 @@
                         <th>ID</th>
                         <th>Total</th>
                         <th>Chemical</th>
-                        <th>User</th>
+                        <th>Student Code</th>
+                        <th>Telephone</th>
                         <th>Requisitions Date</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,8 +29,11 @@
                     	{{ $chem->name }}
                     </td>
                     <td>
-                    	<?php $user = Sentry::user($requisition->user_id); ?>
-                    	{{ $user->metadata['first_name'] }} {{ $user->metadata['last_name'] }}
+                    	<?php $user = Sentry::user((int)$requisition->user_id); ?>
+                    	{{ $user->metadata['student_code'] }}
+                    </td>
+                    <td>
+                        {{ $user->metadata['telephone'] }}
                     </td>
                     <td>{{$requisition->created_at}}</td>
                     <td>
@@ -40,7 +43,6 @@
 	                    	<a href="/requirements/{{$requisition->id}}/delete" class="btn btn-danger">Delete</a>
                     	@endif
                     </td>
-
                 </tr>
                 @empty
                 <tr>

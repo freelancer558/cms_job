@@ -107,7 +107,7 @@ class Requirements_Controller extends Base_Controller {
 
 	public function get_approved()
 	{
-		$status = StatusRequirement::where_name('approved')->paginate();
+		$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
 		$current_user = Sentry::user();
 		return View::make('requirements.approved', array(
 			'requisitions' 	=> $status,
