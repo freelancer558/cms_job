@@ -8,7 +8,12 @@ class Products_Controller extends Base_Controller
 
 	public function get_index()
 	{
-		$products = Product::order_by('created_at', 'desc')->paginate();
+		$params = Input::all();
+		if( ! empty($params['serial_no'])){
+			$products = Product::where_serial_no($params['serial_no'])->paginate();
+		}else{
+			$products = Product::order_by('created_at', 'desc')->paginate();
+		}
 	    $current_user = Sentry::user();
 	    $has_access = $current_user->has_access($current_user->groups()[0]['name']);
 	    return View::make('products.index', array('products' => $products, 'current_user' => $current_user, 'has_access' => $has_access));

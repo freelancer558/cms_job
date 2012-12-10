@@ -75,7 +75,6 @@
 $(document).ready(function(){
 	$('.btn.btn-info').popover();
 	$('select :selected').each(function(){
-		console.log($(this).closest('tr').find('.fix_cost'));
 		if($(this).text() == 'fixed') $(this).closest('tr').find('.fix_cost').attr('readonly', false);
 	});
 	$('select[name=status]').change(function(){
@@ -109,6 +108,7 @@ $(document).ready(function(){
     		alert('Cannot add because status is not fixed');
     	}
     });
+    
 });
 </script>
 @endsection
