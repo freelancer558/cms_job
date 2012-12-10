@@ -25,7 +25,7 @@
 	        	@forelse($repairs->results as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
 	        		<td></td>
-	        		<td>{{ Sentry::user($repair->user_id)->metadata['student_code'] }}</td>
+	        		<td>{{ Sentry::user((int)$repair->user_id)->metadata['student_code'] }}</td>
 	        		<td>{{ Product::find((int)$repair->product_id)->serial_no }}</td>
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
