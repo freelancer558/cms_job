@@ -15,7 +15,7 @@ class Products_Controller extends Base_Controller
 			$products = Product::order_by('created_at', 'desc')->paginate();
 		}
 	    $current_user = Sentry::user();
-	    $has_access = $current_user->has_access($current_user->groups()[0]['name']);
+	    $has_access = $current_user->in_group('superuser');
 	    return View::make('products.index', array('products' => $products, 'current_user' => $current_user, 'has_access' => $has_access));
 	}
 	public function get_new()

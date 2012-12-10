@@ -37,3 +37,5 @@ publish
 .idea
 
 public/uploads/**/*
+
+application/config/database.php
