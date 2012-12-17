@@ -205,7 +205,7 @@ class Products_Controller extends Base_Controller
 	    }
 	    else
 	    {
-	      $data['success'] = 'Update successfull.';
+	      $data['success'] = 'Update successfull.;';
 	      return Redirect::to('products/index')->with_input()->with('status_success', $data['success']);
 	    }
 	  }
@@ -215,10 +215,11 @@ class Products_Controller extends Base_Controller
 	    try
 	    {
 	      // update the user
-	      $delete = Product::find($id)->delete();
-	      if ($delete)
+	      $product = Product::find($id);
+	      
+	      if ($product->photos()->delete())
 	      {
-	          return Redirect::to('products/index');
+	      	if($product->delete())  return Redirect::to('products/index');
 	      }
 	    }
 	    catch (Sentry\SentryException $e)
