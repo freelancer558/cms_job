@@ -211,6 +211,7 @@ class Products_Controller extends Base_Controller
 	  }
 	   public function get_destroy()
 	  {
+	  	$data = array();
 	    $id = (int)Request::route()->parameters[0];
 	    try
 	    {
@@ -219,9 +220,10 @@ class Products_Controller extends Base_Controller
 	      
 	      if ($product->photos())
 	      {
-	      	if($product->photos()->delete() && $product->delete())  return Redirect::to('products/index');
+	      	$product->photos()->delete();
+	      	$product->delete();
 	      }else{
-	      	if($product->delete())  return Redirect::to('products/index');
+	      	$product->delete();
 	      }
 	    }
 	    catch (Sentry\SentryException $e)
