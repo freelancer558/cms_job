@@ -217,8 +217,10 @@ class Products_Controller extends Base_Controller
 	      // update the user
 	      $product = Product::find($id);
 	      
-	      if ($product->photos()->delete())
+	      if ($product->photos())
 	      {
+	      	if($product->photos()->delete() && $product->delete())  return Redirect::to('products/index');
+	      }else{
 	      	if($product->delete())  return Redirect::to('products/index');
 	      }
 	    }
