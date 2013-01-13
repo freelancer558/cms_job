@@ -7,7 +7,29 @@ class Chemicals_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		$chemicals = Chemical::order_by('created_at', 'desc')->paginate();
+		$params = Input::all();
+		if(empty($params) || empty($params['text_search'])){
+			$chemicals = Chemical::order_by('created_at', 'desc')->paginate();
+		}else{
+			if($params['search_by'] == "requesting_chemical"){
+				$user = UsersMetadata::where_first_name($params['text_search'])->first();
+				if(count($user)>0){
+					$requirements = Requirement::where_user_id($user->user_id)->get();
+					$chemical_ids = [];
+					foreach($requirements as $requirement){
+						array_push($chemical_ids, $requirement->chemical_id);
+					}
+					$chemicals = Chemical::where_in('id', $chemical_ids)->paginate();
+				}else{
+					$chemicals = Chemical::where_id(0)->paginate();
+				}
+			}elseif($params['search_by'] == "chemical_name"){
+				$chemicals = Chemical::where('name', 'like', '%'.$params['text_search'].'%')->paginate();
+				// return print_r($chemicals->results);
+			}else{
+				$chemicals = Chemical::order_by('created_at', 'desc')->paginate();
+			}			
+		}
 	    $current_user = Sentry::user();
 	    return View::make('chemicals.index', array('chemicals' => $chemicals, 'user' => $current_user));
 	}

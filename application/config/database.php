@@ -72,7 +72,7 @@ return array(
 			'host'     => 'localhost',
 			'database' => 'chemdb',
 			'username' => 'root',
-			'password' => 'root',
+			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),
