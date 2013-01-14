@@ -4,6 +4,7 @@ class Repairs_Controller extends Base_Controller {
 
 	public function action_index()
 	{	
+		$params = Input::all();
 		$user = Sentry::user();
 		$message = "You don't have permission.";
 		if($user->in_group('student')){
@@ -11,10 +12,50 @@ class Repairs_Controller extends Base_Controller {
 			$repairs = User::find($user->id)->repairs()->order_by('created_at', 'desc')->paginate();
 		}elseif($user->in_group('teacher')){
 			$repair_status = ["pending", "reject", "accept"];
-			$repairs = Repair::order_by('created_at', 'desc')->paginate();
+			if(empty($params) || empty($params['text_search'])){
+				$repairs = Repair::order_by('created_at', 'desc')->paginate();
+			}else{
+				if($params['search_by'] == "serial_no"){
+					$product = Product::where_serial_no($params['text_search'])->first();
+					if(count($product)>0){
+						$repairs = Repair::where_product_id($product->id)->paginate();
+					}else{
+						$repairs = Repair::where_id(0)->paginate();
+					}
+				}elseif($params['search_by'] == "student_code"){
+					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
+					if(count($user_data)>0){
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->paginate();
+					}else{
+						$repairs = Repair::where_id(0)->paginate();	
+					}
+				}else{
+					$repairs = Repair::order_by('created_at', 'desc')->paginate();
+				}
+			}
 		}else{
 			$repair_status = ["pending", "reject", "checking", "fixed"];
-			$repairs = Repair::order_by('created_at', 'desc')->paginate();
+			if(empty($params) || empty($params['text_search'])){
+				$repairs = Repair::order_by('created_at', 'desc')->paginate();
+			}else{
+				if($params['search_by'] == "serial_no"){
+					$product = Product::where_serial_no($params['text_search'])->first();
+					if(count($product)>0){
+						$repairs = Repair::where_product_id($product->id)->paginate();
+					}else{
+						$repairs = Repair::where_id(0)->paginate();
+					}
+				}elseif($params['search_by'] == "student_code"){
+					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
+					if(count($user_data)>0){
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->paginate();
+					}else{
+						$repairs = Repair::where_id(0)->paginate();	
+					}
+				}else{
+					$repairs = Repair::order_by('created_at', 'desc')->paginate();
+				}
+			}
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
 		}
 		$message = "You don't have permission.";
