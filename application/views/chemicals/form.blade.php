@@ -1,10 +1,10 @@
 {{ $form->open() }}
 
       {{ $form->text('name', 'Name', ' ') }}
-      {{ $form->text('sum', 'Total', '', array('placeholder'=>'Unit is Kilograms')) }}
+      {{ $form->text('sum', 'Total')) }}
+      {{ $form->select('chemical_types', 'Chemical Type', $chemical_types, false, array('style'=>'width:220px;')) }}
       {{ $form->text('mfd', 'Date of manufacture') }}
       {{ $form->text('exp', 'Expire Date') }}
-      {{ $form->select('chemical_types', 'Chemical Type', $chemical_types, false, array('style'=>'width:220px;')) }}
       <!-- {{ $form->file('photo', "Photo") }} -->
       {{ $form->submit_primary('Save') }}
 {{ $form->close() }}
