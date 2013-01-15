@@ -5,7 +5,10 @@ class Dashboard_Controller extends Base_Controller
     {
         // $photos = Auth::user()->photos()->order_by('created_at', 'desc')->order_by('id', 'desc')->get();
         // return View::make('dashboard.index', array('photos' => $photos));
-        if(Sentry::check()) return View::make('dashboard.index');
+        $chemicals = Chemical::order_by('exp', 'desc')->paginate();
+        $chemicals_is_low = Chemical::order_by('sum', 'asc')->paginate();
+        $current_user = Sentry::user();
+        if(Sentry::check()) return View::make('dashboard.index', array('chemicals' => $chemicals, 'chemicals_is_low' => $chemicals_is_low, 'user' => $current_user));
         return Redirect::to('/users/login')->with('status_error', 'You have to signin before access dashboard.');
     }
     

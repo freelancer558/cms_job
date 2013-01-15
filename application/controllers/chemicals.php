@@ -55,7 +55,7 @@ class Chemicals_Controller extends Base_Controller {
 	    $data       = array();
 	    $inputs      = array(
 	      'name'    => $params["name"],
-	      'sum'  	=> $params['sum'],
+	      'sum'  	=> (int)$params['sum']*1000,
 	      'mfd' 	=> $params['mfd'],
 	      'exp'  	=> $params['exp'],
 	    );
