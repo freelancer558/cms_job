@@ -22,12 +22,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                <?php $index = 1; ?>
                 @forelse($chemicals->results as $chemical)
                 <tr>
                     <td></td>
                     <td>{{$chemical->name}}</td>
                     <td>{{$chemical->sum}}</td>
-                    <td>{{$chemical->exp}}</td>
+                    <td>@if($index<=5)<span class="label label-important">{{$chemical->exp}}</span>@endif</td>
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
                     <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
@@ -39,6 +40,7 @@
                     @endif -->
                     </td>
                 </tr>
+                <?php $index++ ?>
                 @empty
                 <tr>
                     <td colspan="7">No Chemical.</td>
@@ -65,11 +67,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                <?php $index = 1 ?>
                 @forelse($chemicals_is_low->results as $chemical)
                 <tr>
                     <td></td>
                     <td>{{$chemical->name}}</td>
-                    <td>{{$chemical->sum}}</td>
+                    <td>@if($index<=5)<span class="label label-important">{{$chemical->sum}}</span>@endif</td>
                     <td>{{$chemical->exp}}</td>
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
@@ -82,6 +85,7 @@
                     @endif -->
                     </td>
                 </tr>
+                <?php $index++; ?>
                 @empty
                 <tr>
                     <td colspan="7">No Chemical.</td>
