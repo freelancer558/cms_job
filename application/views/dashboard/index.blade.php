@@ -14,10 +14,10 @@
                         <th></th>
                         <th>Name</th>
                         <th>Total</th>
+                        <th>Type</th>
                         <th>Date of manufacture</th>
                         <th>Expire Date</th>
                         <th>Add Date</th>
-                        <th>Type</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -28,11 +28,11 @@
                     <td></td>
                     <td>{{$chemical->name}}</td>
                     <td>{{$chemical->sum}}</td>
+                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
+                    <td>{{$chemical_type->title}}</td>
                     <td>@if($index<=5)<span class="label label-important">{{$chemical->exp}}</span>@endif</td>
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
-                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
-                    <td>{{$chemical_type->title}}</td>
                     <td>
                     <!-- @if($user->in_group('superuser'))                        
                         {{ HTML::link('chemicals/'.$chemical->id.'/edit', 'Edit ') }} |
@@ -59,10 +59,10 @@
                         <th></th>
                         <th>Name</th>
                         <th>Total</th>
+                        <th>Type</th>
                         <th>Date of manufacture</th>
                         <th>Expire Date</th>
                         <th>Add Date</th>
-                        <th>Type</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -73,11 +73,11 @@
                     <td></td>
                     <td>{{$chemical->name}}</td>
                     <td>@if($index<=5)<span class="label label-important">{{$chemical->sum}}</span>@endif</td>
+                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
+                    <td>{{$chemical_type->title}}</td>
                     <td>{{$chemical->exp}}</td>
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
-                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
-                    <td>{{$chemical_type->title}}</td>
                     <td>
                     <!-- @if($user->in_group('superuser'))                        
                         {{ HTML::link('chemicals/'.$chemical->id.'/edit', 'Edit ') }} |
