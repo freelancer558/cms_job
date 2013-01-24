@@ -107,12 +107,41 @@ class Requirements_Controller extends Base_Controller {
 
 	public function get_approved()
 	{
-		$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
+		$params = Input::all();
+		if(empty($params)){
+			$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
+		}else{
+			$ids = [];
+			if($params['search_by'] == "chemical_name" && !empty($params['text_search'])){
+				$chemicals = Chemical::where('name', 'LIKE', '%'.$params['text_search'].'%')->paginate();
+				if(count($chemicals->results)>0){
+					foreach($chemicals->results as $chemical => $result){
+						$requirement = Requirement::where_chemical_id($result->id)->first();
+						if(count($requirement)>0) array_push($ids, $requirement->id);
+					}
+					$status = StatusRequirement::where_in('requirement_id', $ids)->paginate();
+				}else{
+					$status = StatusRequirement::where_id(0)->paginate();
+				}
+			}elseif($params['search_by'] == "std_code" && !empty($params['text_search'])){
+				$users = UsersMetadata::where('student_code', 'LIKE', '%'.$params['text_search'].'%')->paginate();
+				if(count($users->results)>0){
+					foreach($users->results as $user => $result){
+						$requirement = Requirement::where_user_id($result->user_id)->first();
+						if(count($requirement)>0) array_push($ids, $requirement->id);
+					}
+					$status = StatusRequirement::where_in('requirement_id', $ids)->paginate();
+				}else{
+					$status = StatusRequirement::where_id(0)->paginate();
+				}
+			}else{
+				$status = StatusRequirement::where_id(0)->paginate();
+			}
+		}
 		$current_user = Sentry::user();
 		return View::make('requirements.approved', array(
 			'requisitions' 	=> $status,
 			'current_user' 	=> $current_user,
 		));
-
 	}
 }

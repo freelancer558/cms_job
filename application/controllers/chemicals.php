@@ -8,7 +8,7 @@ class Chemicals_Controller extends Base_Controller {
 	public function get_index()
 	{
 		$params = Input::all();
-		if(empty($params) || empty($params['text_search'])){
+		if(empty($params)){
 			$chemicals = Chemical::order_by('created_at', 'desc')->paginate();
 		}else{
 			if($params['search_by'] == "requesting_chemical"){
