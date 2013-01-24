@@ -10,7 +10,6 @@
             <div class="input-prepend input-append">
               <input class="span2" name="text_search" id="search_product_serial_no" type="text" placeholder="Search by --> ">
               <select class="span2" name="search_by" style="margin:0;">
-                    <option value="requesting_chemical">ขื่อผู้ส่งคำร้อง</option>
                     <option value="chemical_name">ชื่อสารเคมี</option>
                 </select>
               <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
