@@ -34,10 +34,9 @@
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
                     <td>
-                    <!-- @if($user->in_group('superuser'))                        
-                        {{ HTML::link('chemicals/'.$chemical->id.'/edit', 'Edit ') }} |
-                        {{ HTML::link('chemicals/'.$chemical->id.'/delete', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
-                    @endif -->
+                    @if($user->in_group('superuser'))                        
+                      {{ HTML::link('chemicals/'.$chemical->id.'/hide', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
+                    @endif
                     </td>
                 </tr>
                 <?php $index++ ?>
@@ -79,10 +78,9 @@
                     <td>{{$chemical->mfd}}</td>
                     <td>{{$chemical->created_at}}</td>
                     <td>
-                    <!-- @if($user->in_group('superuser'))                        
-                        {{ HTML::link('chemicals/'.$chemical->id.'/edit', 'Edit ') }} |
-                        {{ HTML::link('chemicals/'.$chemical->id.'/delete', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
-                    @endif -->
+                    @if($user->in_group('superuser'))                        
+                      {{ HTML::link('chemicals/'.$chemical->id.'/hide', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
+                    @endif
                     </td>
                 </tr>
                 <?php $index++; ?>
@@ -97,4 +95,15 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section("scripts")
+<script type="text/javascript">
+$(document).ready(function(){
+    $('a[data-confirm]').bind('click', function(e){
+        if(confirm($(this).attr('data-confirm'))) return true;
+        e.preventDefault();
+    });
+});
+</script>
 @endsection

@@ -5,7 +5,7 @@ class Dashboard_Controller extends Base_Controller
     {
         // $photos = Auth::user()->photos()->order_by('created_at', 'desc')->order_by('id', 'desc')->get();
         // return View::make('dashboard.index', array('photos' => $photos));
-        $chemicals = Chemical::order_by('exp', 'desc')->paginate();
+        $chemicals = Chemical::where('show', '=', 1)->order_by('exp', 'desc')->paginate();
         $chemicals_is_low = Chemical::order_by('sum', 'asc')->paginate();
         $current_user = Sentry::user();
         if(Sentry::check()) return View::make('dashboard.index', array('chemicals' => $chemicals, 'chemicals_is_low' => $chemicals_is_low, 'user' => $current_user));

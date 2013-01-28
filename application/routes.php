@@ -34,6 +34,7 @@ Route::get('/chemicals/(:num)', 'chemicals@show');
 Route::get('/chemicals/(:num)/edit', 'chemicals@edit');
 Route::post('/chemicals/(:num)/edit', 'chemicals@edit');
 Route::get('/chemicals/(:num)/delete', 'chemicals@destroy');
+Route::get('/chemicals/(:num)/hide', 'chemicals@hide');
 Route::get('/chemicals/(:num)/detail', 'chemicals@detail');
 Route::get('/chemicals/(:num)/info', 'chemicals@info');
 

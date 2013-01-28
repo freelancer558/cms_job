@@ -103,6 +103,34 @@ class Chemicals_Controller extends Base_Controller {
 			return Redirect::to('/chemicals/new');
 		}
 	}
+	public function get_hide()
+	{
+		$data = array();
+		$id = (int)Request::route()->parameters[0];
+    try
+    {
+      // update the user
+      $chemical = Chemical::find($id);
+      $chemical->show = false;
+      if (!$chemical->save())
+      {
+         $data['errors'] = 'Fail!!!, Cannot delete.';
+      }
+    }
+    catch (Sentry\SentryException $e)
+    {
+      $data['errors'] = $e->getMessage();
+    }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('/dashboard')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      $data['success'] = 'Delete successfull.';
+      return Redirect::to('/dashboard')->with('status_success', $data['success']);
+    }
+	}
 	public function get_destroy()
 	{
 		$data = array();
