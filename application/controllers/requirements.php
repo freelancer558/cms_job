@@ -42,9 +42,9 @@ class Requirements_Controller extends Base_Controller {
 			if(!$requisition->save()){
 				$data['errors'] = 'Cannot save please check again.';
 			}else{
-				$chemical = Chemical::find($params['chemical_id']);
-				$chemical->sum -= $params['total'];
-				$chemical->save();
+				// $chemical = Chemical::find($params['chemical_id']);
+				// $chemical->sum -= $params['total'];
+				// $chemical->save();
 
 				$sr = new StatusRequirement(array('name' => 'pending', 'user_id' => $inputs['user_id']));
 				if(!$requisition->status_requirement()->insert($sr)){

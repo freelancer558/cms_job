@@ -27,6 +27,8 @@ Route::post('/repairs(:all)', 'repairs@create');
 Route::get('/repairs/(:num)/tracking', 'repairs@tracking');
 
 Route::get('/chemicals', 'chemicals@index');
+Route::get('/chemicals/management', 'chemicals@management');
+Route::post('/chemicals/management', 'chemicals@management');
 Route::get('/chemicals/new', 'chemicals@new');
 Route::get('/chemicals/search_by_name', 'chemicals@search_by_name');
 Route::post('/chemicals/addtype', 'chemicals@addtype');

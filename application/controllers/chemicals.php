@@ -33,6 +33,62 @@ class Chemicals_Controller extends Base_Controller {
 	    $current_user = Sentry::user();
 	    return View::make('chemicals.index', array('chemicals' => $chemicals, 'user' => $current_user));
 	}
+	public function get_management()
+	{
+		$params = Input::all();
+		if(empty($params)){
+			$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
+		}else{
+			$ids = [];
+			if($params['search_by'] == "chemical_name" && !empty($params['text_search'])){
+				$chemicals = Chemical::where('name', 'LIKE', '%'.$params['text_search'].'%')->paginate();
+				if(count($chemicals->results)>0){
+					foreach($chemicals->results as $chemical => $result){
+						$requirement = Requirement::where_chemical_id($result->id)->first();
+						if(count($requirement)>0) array_push($ids, $requirement->id);
+					}
+					$status = StatusRequirement::where_in('requirement_id', $ids)->paginate();
+				}else{
+					$status = StatusRequirement::where_id(0)->paginate();
+				}
+			}elseif($params['search_by'] == "std_code" && !empty($params['text_search'])){
+				$users = UsersMetadata::where('student_code', 'LIKE', '%'.$params['text_search'].'%')->paginate();
+				if(count($users->results)>0){
+					foreach($users->results as $user => $result){
+						$requirement = Requirement::where_user_id($result->user_id)->first();
+						if(count($requirement)>0) array_push($ids, $requirement->id);
+					}
+					$status = StatusRequirement::where_in('requirement_id', $ids)->paginate();
+				}else{
+					$status = StatusRequirement::where_id(0)->paginate();
+				}
+			}else{
+				$status = StatusRequirement::where_id(0)->paginate();
+			}
+		}
+		$current_user = Sentry::user();
+		return View::make('chemicals.manage', array(
+			'requisitions' 	=> $status,
+			'current_user' 	=> $current_user,
+		));
+	}
+	public function post_management()
+	{
+		$params = Input::all();
+		$status_requirement = StatusRequirement::find((int)$params['requisition_id']);
+		$status_requirement->name = 'approved';
+
+		$requirement = Requirement::find($status_requirement->requirement_id);		
+		$requirement->total = $params['requisition_value'];
+		$requirement->save();
+		$status_requirement->save();		
+
+		$chemical = Chemical::find((int)$params['chemical_id']);
+		$chemical->sum -= $params['requisition_value'];
+		$chemical->save();
+
+		return Redirect::to('/chemicals/management');
+	}
 	public function get_new()
 	{	
 		$chemical = new Chemical();

@@ -38,6 +38,7 @@ $(document).ready(function(){
     $.get('/chemicals/search_by_name', function(result){
     	var arr = [];
     	for(var value in result) arr.push(result[value]+", "+value);
+        // for(var value in result) arr.push(result[value]);
       $( "#search_chemical" ).autocomplete({
         source: arr,
         select: function( event, ui ) {

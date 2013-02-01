@@ -17,7 +17,7 @@
         </form>
         <h1>Chemicals</h1>
         <div class="well" style="text-align: center">
-        	<table class="table table-striped">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -57,6 +57,7 @@
             </table>
             {{ $chemicals->links() }}
         </div>
+        <a href="/chemicals/management" class="btn"><i class="icon-cog"></i>Management</a>
     </div>
 </div>
 @endsection
