@@ -195,10 +195,17 @@ class Chemicals_Controller extends Base_Controller {
 	    {
 	      // update the user
 	      $chemical = Chemical::find($id);
-	      $chemical->chemicals_chemical_type()->delete();
-	      if (!$chemical->delete())
-	      {
-	         $data['errors'] = 'Fail!!!, Cannot delete.';
+	      $requirement = Requirement::where_chemical_id($chemical->id)->get();
+	      if(!empty($chemical)){
+	      	$chemical->chemicals_chemical_type()->delete();
+		      if(!empty($requirement)) {
+		      	$status_requirement = StatusRequirement::where_requirement_id($requirement->id)->get();
+		      	if(!empty($status_requirement)){
+		      		$status_requirement->delete();
+		      	}
+		      	$requirement->delete();
+		      }
+		      if (!$chemical->delete()) $data['errors'] = 'Fail!!!, Cannot delete.';
 	      }
 	    }
 	    catch (Sentry\SentryException $e)
