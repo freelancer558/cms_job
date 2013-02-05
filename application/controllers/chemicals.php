@@ -9,7 +9,7 @@ class Chemicals_Controller extends Base_Controller {
 	{
 		$params = Input::all();
 		if(empty($params)){
-			$chemicals = Chemical::order_by('created_at', 'desc')->paginate();
+			$chemicals = Chemical::where('show', '=', 1)->order_by('created_at', 'desc')->paginate();
 		}else{
 			if($params['search_by'] == "requesting_chemical"){
 				$user = UsersMetadata::where_first_name($params['text_search'])->first();
