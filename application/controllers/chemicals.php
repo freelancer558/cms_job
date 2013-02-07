@@ -9,7 +9,7 @@ class Chemicals_Controller extends Base_Controller {
 	{
 		$params = Input::all();
 		if(empty($params)){
-			$chemicals = Chemical::where('show', '=', 1)->order_by('created_at', 'desc')->paginate();
+			$chemicals = Chemical::where('remove', '=', 0)->order_by('created_at', 'desc')->paginate();
 		}else{
 			if($params['search_by'] == "requesting_chemical"){
 				$user = UsersMetadata::where_first_name($params['text_search'])->first();
@@ -185,6 +185,34 @@ class Chemicals_Controller extends Base_Controller {
     {
       $data['success'] = 'Delete successfull.';
       return Redirect::to('/dashboard')->with('status_success', $data['success']);
+    }
+	}
+	public function get_remove()
+	{
+		$data = array();
+		$id = (int)Request::route()->parameters[0];
+    try
+    {
+      // update the user
+      $chemical = Chemical::find($id);
+      $chemical->remove = true;
+      if (!$chemical->save())
+      {
+         $data['errors'] = 'Fail!!!, Cannot delete.';
+      }
+    }
+    catch (Sentry\SentryException $e)
+    {
+      $data['errors'] = $e->getMessage();
+    }
+    if (array_key_exists('errors', $data))
+    {
+        return Redirect::to('/chemicals')->with_input()->with('status_error', $data['errors']);
+    }
+    else
+    {
+      $data['success'] = 'Delete successfull.';
+      return Redirect::to('/chemicals')->with('status_success', $data['success']);
     }
 	}
 	public function get_destroy()
