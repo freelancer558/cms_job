@@ -108,8 +108,9 @@ class Requirements_Controller extends Base_Controller {
 	public function get_approved()
 	{
 		$params = Input::all();
+		$current_user = Sentry::user();
 		if(empty($params)){
-			$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
+			$status = StatusRequirement::where('user_id', '=', $current_user->id)->order_by('created_at', 'desc')->paginate();
 		}else{
 			$ids = [];
 			if($params['search_by'] == "chemical_name" && !empty($params['text_search'])){
@@ -138,7 +139,6 @@ class Requirements_Controller extends Base_Controller {
 				$status = StatusRequirement::where_id(0)->paginate();
 			}
 		}
-		$current_user = Sentry::user();
 		return View::make('requirements.approved', array(
 			'requisitions' 	=> $status,
 			'current_user' 	=> $current_user,
