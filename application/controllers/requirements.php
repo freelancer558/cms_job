@@ -6,8 +6,12 @@ class Requirements_Controller extends Base_Controller {
 	public function get_index()
 	{
 		$chemicals = Chemical::all();
-		$requisitions = Requirement::order_by('created_at', 'desc')->paginate();
 		$current_user = Sentry::user();
+		if($current_user->in_group('superuser') || $current_user->in_group('teacher')){
+			$requisitions = Requirement::order_by('created_at', 'desc')->paginate();
+		}else{
+			$requisitions = Requirement::where('user_id', $current_user->id)->order_by('created_at', 'desc')->paginate();
+		}
 		$status_requirements = ["pending", "approved", "rejected"];
 		return View::make('requirements.requisition', array(
 			'chemicals' 	=> $chemicals,
