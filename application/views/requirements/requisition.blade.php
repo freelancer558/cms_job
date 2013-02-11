@@ -42,12 +42,11 @@
                     		<?php $status = StatusRequirement::find($requisition->status_requirement->id); ?>
 	                    	{{ Form::select('status', $status_requirements, array_search($status->name, $status_requirements)) }}
 	                    	<a href="/requirements/{{$requisition->id}}/delete" class="btn btn-danger">Delete</a>
-                    	@endif
-                    </td>
-                    <td>
-                        @if(! empty($requisition->status_requirements))
-                          {{ $requisition->status_requirements->name }}
+                      @else
+                        @if(! empty($requisition->status_requirement))
+                          {{ $requisition->status_requirement->name }}
                         @endif
+                    	@endif
                     </td>
                 </tr>
                 @empty
