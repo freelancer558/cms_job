@@ -17,6 +17,7 @@
                         <th>Student Code</th>
                         <th>Telephone</th>
                         <th>Requisitions Date</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,11 @@
 	                    	{{ Form::select('status', $status_requirements, array_search($status->name, $status_requirements)) }}
 	                    	<a href="/requirements/{{$requisition->id}}/delete" class="btn btn-danger">Delete</a>
                     	@endif
+                    </td>
+                    <td>
+                        @if(! empty($requisition->status_requirements))
+                          {{ $requisition->status_requirements->name }}
+                        @endif
                     </td>
                 </tr>
                 @empty
