@@ -110,7 +110,11 @@ class Requirements_Controller extends Base_Controller {
 		$params = Input::all();
 		$current_user = Sentry::user();
 		if(empty($params)){
-			$status = StatusRequirement::where('user_id', '=', $current_user->id)->order_by('created_at', 'desc')->paginate();
+			if($current_user->in_group('superuser') && $current_user->in_group('teacher')){
+				$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
+			}else{
+				$status = StatusRequirement::where('user_id', '=', $current_user->id)->order_by('created_at', 'desc')->paginate();
+			}
 		}else{
 			$ids = [];
 			if($params['search_by'] == "chemical_name" && !empty($params['text_search'])){
