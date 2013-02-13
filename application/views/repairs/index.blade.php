@@ -1,11 +1,11 @@
 @layout('shared/user_header')
 
 @section('content')
-<div class="row">
+<div class="row do-not-print">
     <div class="span2">
         @include('shared/user_sidebar')
     </div>
-    <div class="span10">
+    <div class="span10 do-not-print">
     	<form class="navbar-form pull-right" id="search_form" action="/repairs" method="GET">
             <div class="input-prepend input-append">
               <input class="span2" name="text_search" id="" type="text" placeholder="Search by --> ">
@@ -34,9 +34,14 @@
         		<tbody>
 	        	@forelse($repairs->results as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
-	        		<td></td>
+	        		<td>
+	        			<?php 
+	        				$fullname = Sentry::user((int)$repair->user_id)->metadata['first_name'] . ' ' . Sentry::user((int)$repair->user_id)->metadata['last_name']; 
+	        				$product_serial = Product::find((int)$repair->product_id)->serial_no;
+	        			?>
+	        		</td>
 	        		<td>{{ Sentry::user((int)$repair->user_id)->metadata['student_code'] }}</td>
-	        		<td>{{ Product::find((int)$repair->product_id)->serial_no }}</td>
+	        		<td>{{ $product_serial }}</td>
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
 	        		<td>
@@ -45,6 +50,9 @@
 	        			{{ HTML::link('/repairs/'.$repair->product_id.'/tracking', 'Tracking', array('class'=>'btn', 'style'=>'vertical-align: top;')) }}
 	        			@if($status->title == 'pending')
 	        				{{ HTML::link('/repairs/'.$repair->id.'/delete', 'Delete', array('class'=>'btn btn-danger no-margin', 'style'=>'vertical-align: top;')) }}
+	        			@endif
+	        			@if($status->title == 'fixed')
+	        				{{ HTML::link('#', 'Print', array('class'=>'btn no-margin print-btn', 'style'=>'vertical-align: top;', 'data-name' => $fullname, 'data-date' => $repair->date, 'data-product-serial' => $product_serial, 'data-place' => $repair->setup_place, 'data-detail' => $repair->detail)) }}				
 	        			@endif
 	        		</td>
 	        		<td>
@@ -82,11 +90,54 @@
         </div>
     </div>
 </div>
+<div class="row print">
+	<div class="span10 pagination-centered"><strong>ใบแจ้งซ่อมอุปกรณ์และเครื่องมือวิทยาศาสตร์ ภาควิชาจุลชีววิทยา</strong></div>
+	<div class="span10 pagination-centered"><strong>คณะวิทยาศาสตร์ มหาวิทยาลัยขอนแก่น</strong></div>
+	<br><br>
+	<div class="span10 pagination-right"><strong>ผู้แจ้ง (นาย/นางสาว/อาจารย์) ......................................... วันที่แจ้งซ่อม (ว/ด/ป)...................................</strong></div>
+	<div class="span12"><strongชื่ออุปกรณ์/เครื่องมือวิทยาศาสตร์.................................................................... Model ................................></strong></div>
+	<div class="span12"><strong>เลขที่ครุภัณฑ์ ........................................... สถานที่ติดตั้งอุปกรณ์/เครื่องมือวิทยาศาสตร์ ......................</strong></div>
+	<div class="span12"><strong>ลักษณะอาการที่เสียหาย .......................................................................................................................</strong></div>
+	<div class="span12"><strong>..............................................................................................................................................................</strong></div>
+	<div class="span12"><strong>..............................................................................................................................................................</strong></div>
+	<div class="span12"><strong>..............................................................................................................................................................</strong></div>
+	<br><br>
+	<div class="span12 pagination-right"><strong>ทราบ &nbsp;&nbsp;&nbsp;&#9633;&nbsp;&nbsp;&nbsp;  แจ้งเวียนอาจารย์ในภาควิชา เพื่อดำเนินการซ่อมต่อไป</strong></div>
+	<div class="span4 pagination-right"><strong>แจ้งบริษัทเพื่อดำเนินการซ่อม &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></div>
+	<br>
+	<div class="span4 pagination-right"><strong>……………………………………………………</strong></div>
+	<div class="span6 pagination-right"><strong>(ผศ.ดร.โสภณ บุญลือ/นางนุจนา สีสวยหูต)&nbsp;&nbsp;</strong></div>
+
+	<span class="print-name"></span>
+	<span class="print-date"></span>
+	<span class="print-product-serial"></span>
+	<span class="print-place"></span>
+	<span class="print-detail"></span>
+</div>
 @endsection
 
 @section('scripts')
 <script type="text/javascript">
 $(document).ready(function(){
+
+	$('.print-btn').click(function(){
+		var name 		= $(this).data('name');
+		var pdate 	= $(this).data('date');
+		var pserial = $(this).data('product-serial');
+		var place 	= $(this).data('place');
+		var pdetail = $(this).data('detail');
+
+		$('.print .print-name').text(name);
+		$('.print .print-date').text(pdate);
+		$('.print .print-product-serial').text(pserial);
+		$('.print .print-place').text(place);
+		$('.print .print-detail').text(pdetail);
+
+		$('.print').css('display', 'block');
+		window.print();
+		$('.print').css('display', 'none');
+	});
+
 	$('.btn.btn-info').popover();
 	$('select :selected').each(function(){
 		if($(this).text() == 'fixed') $(this).closest('tr').find('.fix_cost').attr('readonly', false);

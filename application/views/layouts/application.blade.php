@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width">
     <?php Asset::add('application', 'css/application.css'); ?>
     <?php Asset::add('jqueryui', 'css/flick/jquery-ui.css') ?>
+    
+    {{ HTML::style('css/print.css', array('media' => 'print')); }}
     {{ Asset::container('bootstrapper')->styles() }}
     {{ Asset::styles() }}
 		@yield('styles')
@@ -18,7 +20,7 @@
 		@yield('scripts')
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-fixed-top do-not-print">
       <div class="navbar-inner">
         <div class="container">
           {{ HTML::link('/home', 'SCBL', array('class'=>'brand')) }}
@@ -39,7 +41,7 @@
       @include('shared.status')
       @yield('content')
       <hr>
-      <footer>
+      <footer class="do-not-print">
       	<p>&copy; Scientific equipment and chemical management system for Biological laboratory.</p>    
       </footer>
     </div> <!-- /container -->

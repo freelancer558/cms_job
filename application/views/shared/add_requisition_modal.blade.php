@@ -37,12 +37,16 @@ $(document).ready(function(){
     });
     $.get('/chemicals/search_by_name', function(result){
     	var arr = [];
-    	for(var value in result) arr.push(result[value]+", "+value);
-        // for(var value in result) arr.push(result[value]);
+    	// for(var value in result) arr.push(result[value]+", "+value);
+        for(var value in result) {
+          arr.push(result[value]);
+          $('.modal-body').append('<input type="hidden" name="'+result[value]+'" class="'+result[value]+'" value="'+value+'">')
+        }
       $( "#search_chemical" ).autocomplete({
         source: arr,
         select: function( event, ui ) {
-        	var chemical_id = parseInt(ui.item['value'].split(',')[1]);
+        	var chemical_id = $('input.'+result[value].trim()).val();
+          console.log(chemical_id);
         	$('#chemical_id').val(chemical_id);
         	$.get('/chemicals/'+chemical_id+'/info', function(result){
         		var $chemical = result.attributes;
