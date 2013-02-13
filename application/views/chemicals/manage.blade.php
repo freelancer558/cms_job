@@ -47,7 +47,7 @@
                         </td>
                         <td>{{$requirement->requirement->created_at}}</td>
                         <td>
-                          @if($requirement->name != "approved")
+                          @if($requirement->name == "approved")
                           <form action="/chemicals/management" method="POST">
                             <div class="input-prepend input-append">
                               <input type="text" class="span1" name="requisition_value" placeholder="0">
