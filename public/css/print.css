@@ -1,0 +1,16 @@
+.do-not-print { display: none; }
+.print {display: block; position: relative;}
+.print div { line-height: 2em;}
+.print span { position: absolute; }
+
+.print span.print-name { top: 95px; left: 200px; }
+.print span.print-date { top: 95px; left: 500px; }
+
+.print span.print-product-serial { top: 125px; left: 100px; }
+.print span.print-place { top: 125px; left: 550px; }
+.print span.print-detail { top: 150px; left: 180px; }
+
+.repair-name{
+	border-bottom: 2px dotted black;
+	width: 200px;
+}
