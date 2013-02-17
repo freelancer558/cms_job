@@ -5,8 +5,13 @@ class Dashboard_Controller extends Base_Controller
     {
         // $photos = Auth::user()->photos()->order_by('created_at', 'desc')->order_by('id', 'desc')->get();
         // return View::make('dashboard.index', array('photos' => $photos));
-        $chemicals = Chemical::where('show', '=', 1)->order_by('exp', 'desc')->paginate();
-        $chemicals_is_low = Chemical::where('show', '=', 1)->order_by('sum', 'asc')->paginate();
+        $chemicals = Chemical::where('exp', '>=', 'DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 MONTH)), INTERVAL 1 DAY)', 'AND', 'show', '=', 1)->order_by('exp', 'desc')->paginate();
+        // $chemicals = DB::table('chemicals')->where('show', '=', 1)->or_where(function($query){
+        //   $query->where('exp', '<', 'NOW()');
+        //   $query->where('exp', '>', '(NOW() - INTERVAL 1 MONTH)');
+        // })->order_by('exp', 'desc')->paginate();
+        // $chemicals = DB::query('SELECT * FROM `chemicals` WHERE `show` = 1 AND `exp` < NOW() OR `exp` > (NOW() - INTERVAL 1 MONTH) ORDER BY exp DESC')->paginate();
+        $chemicals_is_low = Chemical::where('sum', '<', 100, 'AND', 'show', '=', 1)->order_by('sum', 'asc')->paginate();
         $current_user = Sentry::user();
         if(Sentry::check()) return View::make('dashboard.index', array('chemicals' => $chemicals, 'chemicals_is_low' => $chemicals_is_low, 'user' => $current_user));
         return Redirect::to('/users/login')->with('status_error', 'You have to signin before access dashboard.');

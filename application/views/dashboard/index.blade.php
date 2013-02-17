@@ -28,7 +28,8 @@
                     <td></td>
                     <td>{{$chemical->name}}</td>
                     <td>{{$chemical->sum}}</td>
-                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
+                    <?php $cm_type = ChemicalsChemicalType::find($chemical->id); ?>
+                    <?php $chemical_type = ChemicalType::find($cm_type->chemical_type_id); ?>
                     <td>{{$chemical_type->title}}</td>
                     <td>@if($index<=5)<span class="label label-important">{{$chemical->exp}}</span>@endif</td>
                     <td>{{$chemical->mfd}}</td>
@@ -71,8 +72,15 @@
                 <tr>
                     <td></td>
                     <td>{{$chemical->name}}</td>
-                    <td>@if($index<=5)<span class="label label-important">{{$chemical->sum}}</span>@endif</td>
-                    <?php $chemical_type = ChemicalType::find($chemical->chemicals_chemical_type()->first()->chemical_type_id); ?>
+                    <td>
+                      @if($index<=5)
+                        <span class="label label-important">{{$chemical->sum}}</span>
+                      @else
+                        {{$chemical->sum}}
+                      @endif
+                    </td>
+                    <?php $cm_type = ChemicalsChemicalType::find($chemical->id); ?>
+                    <?php $chemical_type = ChemicalType::find($cm_type->chemical_type_id); ?>
                     <td>{{$chemical_type->title}}</td>
                     <td>{{$chemical->exp}}</td>
                     <td>{{$chemical->mfd}}</td>
@@ -87,7 +95,7 @@
                 @empty
                 <tr>
                     <td colspan="7">No Chemical.</td>
-                </tr>
+                </tr>7
                 @endforelse
                 </tbody>
             </table>
