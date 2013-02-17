@@ -77,6 +77,7 @@ class Repairs_Controller extends Base_Controller {
 		}else{
 			$status_repair->title = $params['title'];
 			$repair->fix_cost = $params['fix_cost'];
+			$repair->invoice_id = $params['invoice_id'];
 			$repair->save();
 			return !$status_repair->save() ? Response::json($params, 500) : Response::json('Change status successfull', 200);
 		}

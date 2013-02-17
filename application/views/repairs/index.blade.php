@@ -75,7 +75,10 @@
 	        		@if(Sentry::user()->in_group('superuser'))
 	        		<td>
 	        			<input type="text" name="fix_cost" class="fix_cost" style="width:50px;vertical-align:top;" readonly="true" value="{{$repair->fix_cost}}">
-	        			<a href="#" class="btn add_fix_cost">Add</a>
+	        			<input type="text" name="invoice_id" class="invoice_id" style="width:60px;vertical-align:top;" readonly="true" value="{{$repair->invoice_id}}" placeholder="invoice id">
+	        			@if($repair->fix_cost <= 0)
+	        				<a href="#" class="btn add_fix_cost">Add</a>
+	        			@endif
 	        		</td>
 	        		@endif
 	        	</tr>
@@ -147,11 +150,13 @@ $(document).ready(function(){
 		var repair_id= $(this).closest('tr').attr('data-repair-id');
 		if(status == 'fixed'){
 			$(this).closest('tr').find('.fix_cost').attr('readonly', false);	
+			$(this).closest('tr').find('.invoice_id').attr('readonly', false);	
 		}else{
 			$(this).closest('tr').find('.fix_cost').attr('readonly', true);	
+			$(this).closest('tr').find('.invoice_id').attr('readonly', true);	
 		}
 		if(status != "fixed"){
-			$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: 0}, function(result){
+			$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: 0, invoice_id: ''}, function(result){
 				alert(result);
 			});
 		}
@@ -163,14 +168,15 @@ $(document).ready(function(){
     $('a.add_fix_cost').click(function(e){
     	e.preventDefault();
     	var fix_cost = $(this).closest('tr').find('.fix_cost').val();
+    	var invoice_id = $(this).closest('tr').find('.invoice_id').val();
     	var status = $(this).closest('tr').find('select :selected').text();
     	var repair_id= $(this).closest('tr').attr('data-repair-id');
-    	if(status == "fixed"){
-	    	$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: fix_cost}, function(result){
+    	if(status == "fixed" && invoice_id != ""){
+	    	$.post('/repairs', {title: status, repair_id: repair_id, fix_cost: fix_cost, invoice_id: invoice_id}, function(result){
 				alert(result);
 			});
     	}else{
-    		alert('Cannot add because status is not fixed');
+    		alert('Cannot add because status is not fixed or invoice id is empty');
     	}
     });
     

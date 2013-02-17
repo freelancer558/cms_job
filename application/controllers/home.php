@@ -7,7 +7,7 @@ class Home_Controller extends Base_Controller {
 		// $this->layout->nest('content', 'home.index');
         if(Sentry::check())
         {
-            return View::make('dashboard.index');
+            return Redirect::to('dashboard');
         }
 		return View::make('home.index');
 	}
