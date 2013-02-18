@@ -113,7 +113,7 @@ class Requirements_Controller extends Base_Controller {
 	{
 		$params = Input::all();
 		$current_user = Sentry::user();
-		if(empty($params)){
+		if(empty($params['search_by'])){
 			if($current_user->in_group('superuser') || $current_user->in_group('teacher')){
 				$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
 			}else{

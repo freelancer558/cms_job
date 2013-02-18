@@ -8,7 +8,7 @@ class Chemicals_Controller extends Base_Controller {
 	public function get_index()
 	{
 		$params = Input::all();
-		if(empty($params)){
+		if(empty($params['search_by'])){
 			$chemicals = Chemical::where('remove', '=', 0)->order_by('created_at', 'desc')->paginate();
 		}else{
 			if($params['search_by'] == "requesting_chemical"){
@@ -36,7 +36,7 @@ class Chemicals_Controller extends Base_Controller {
 	public function get_management()
 	{
 		$params = Input::all();
-		if(empty($params)){
+		if(empty($params['search_by'])){
 			$status = StatusRequirement::order_by('created_at', 'desc')->paginate();
 		}else{
 			$ids = [];
