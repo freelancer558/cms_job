@@ -339,7 +339,7 @@ class Chemicals_Controller extends Base_Controller {
 
 	public function get_search_by_name()
 	{
-		$chemicals = Chemical::where('show', '=', 1)->get();
+		$chemicals = Chemical::where('remove', '=', 0)->get();
 		$name = [];
 		foreach($chemicals as $chemical){
 			if(!empty($chemical->name)) $name[$chemical->id] = $chemical->name;
