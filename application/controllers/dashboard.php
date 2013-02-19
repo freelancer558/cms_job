@@ -11,7 +11,7 @@ class Dashboard_Controller extends Base_Controller
         //   $query->where('exp', '>', '(NOW() - INTERVAL 1 MONTH)');
         // })->order_by('exp', 'desc')->paginate();
         // $chemicals = DB::query('SELECT * FROM `chemicals` WHERE `show` = 1 AND `exp` < NOW() OR `exp` > (NOW() - INTERVAL 1 MONTH) ORDER BY exp DESC')->paginate();
-        $chemicals_is_low = Chemical::where('sum', '<', 100, 'AND', 'show', '=', 1)->order_by('sum', 'asc')->paginate();
+        $chemicals_is_low = Chemical::where('show_low', '=', 1)->order_by('sum', 'asc')->paginate();
         $current_user = Sentry::user();
         if(Sentry::check()) return View::make('dashboard.index', array('chemicals' => $chemicals, 'chemicals_is_low' => $chemicals_is_low, 'user' => $current_user));
         return Redirect::to('/users/login')->with('status_error', 'You have to signin before access dashboard.');

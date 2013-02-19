@@ -89,7 +89,7 @@
                     <td>{{$chemical->created_at}}</td>
                     <td>
                     @if($user->in_group('superuser'))                        
-                      {{ HTML::link('chemicals/'.$chemical->id.'/hide', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
+                      {{ HTML::link('chemicals/'.$chemical->id.'/hide_low', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
                     @endif
                     </td>
                 </tr>
