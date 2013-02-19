@@ -25,6 +25,7 @@
                 <?php $index = 1; ?>
                 @forelse($chemicals->results as $chemical)
                 <tr>
+                  <?php if($chemical->show){ ?>
                     <td></td>
                     <td>{{$chemical->name}}</td>
                     <td>{{$chemical->sum}}</td>
@@ -39,6 +40,7 @@
                       {{ HTML::link('chemicals/'.$chemical->id.'/hide', 'Delete', array('data-confirm'=>'Do you want to delete?'))}}
                     @endif
                     </td>
+                  <?php } ?>
                 </tr>
                 <?php $index++ ?>
                 @empty

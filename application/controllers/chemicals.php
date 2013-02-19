@@ -167,7 +167,7 @@ class Chemicals_Controller extends Base_Controller {
     {
       // update the user
       $chemical = Chemical::find($id);
-      $chemical->show = false;
+      $chemical->show = 0;
       if (!$chemical->save())
       {
          $data['errors'] = 'Fail!!!, Cannot delete.';
