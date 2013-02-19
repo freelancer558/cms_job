@@ -13,10 +13,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
     $('#field_mfd').datetimepicker({
-      dateFormat: 'dd/mm/yy',
+      dateFormat: 'yy-mm-dd',
     });
     $('#field_exp').datetimepicker({
-      dateFormat: 'dd/mm/yy',
+      dateFormat: 'yy-mm-dd',
     });
 });
 </script>
