@@ -45,7 +45,7 @@ $(document).ready(function(){
       $( "#search_chemical" ).autocomplete({
         source: arr,
         select: function( event, ui ) {
-        	var chemical_id = $('input.'+result[value].trim()).val();
+        	var chemical_id = $('input.'+$(this).val().trim()).val();
           console.log(chemical_id);
         	$('#chemical_id').val(chemical_id);
         	$.get('/chemicals/'+chemical_id+'/info', function(result){
