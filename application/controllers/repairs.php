@@ -18,19 +18,26 @@ class Repairs_Controller extends Base_Controller {
 				if($params['search_by'] == "serial_no"){
 					$product = Product::where_serial_no($params['text_search'])->first();
 					if(count($product)>0){
-						$repairs = Repair::where_product_id($product->id)->paginate();
+						$repairs = Repair::where_product_id($product->id);
 					}else{
-						$repairs = Repair::where_id(0)->paginate();
+						$repairs = Repair::where_id(0);
 					}
 				}elseif($params['search_by'] == "student_code"){
 					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
 					if(count($user_data)>0){
-						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->paginate();
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc');
 					}else{
-						$repairs = Repair::where_id(0)->paginate();	
+						$repairs = Repair::where_id(0);	
 					}
+				}elseif($params['search_by'] == "chemical_status"){
+					$repaire_ids = [];
+					$status_repair = StatusRepair::where('title', '=', $params['text_search'])->get();
+					foreach($status_repair as $repaire) {
+						array_push($repaire_ids, $repaire->repair_id);
+					}
+					$repairs = Repair::where_in('id', $repaire_ids);
 				}else{
-					$repairs = Repair::order_by('created_at', 'desc')->paginate();
+					$repairs = Repair::order_by('created_at', 'desc');
 				}
 			}
 		}else{
@@ -41,23 +48,31 @@ class Repairs_Controller extends Base_Controller {
 				if($params['search_by'] == "serial_no"){
 					$product = Product::where_serial_no($params['text_search'])->first();
 					if(count($product)>0){
-						$repairs = Repair::where_product_id($product->id)->paginate();
+						$repairs = Repair::where_product_id($product->id);
 					}else{
-						$repairs = Repair::where_id(0)->paginate();
+						$repairs = Repair::where_id(0);
 					}
 				}elseif($params['search_by'] == "student_code"){
 					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
 					if(count($user_data)>0){
-						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->paginate();
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc');
 					}else{
-						$repairs = Repair::where_id(0)->paginate();	
+						$repairs = Repair::where_id(0);	
 					}
+				}elseif($params['search_by'] == "chemical_status"){
+					$repaire_ids = [];
+					$status_repair = StatusRepair::where('title', '=', $params['text_search'])->get();
+					foreach($status_repair as $repaire) {
+						array_push($repaire_ids, $repaire->repair_id);
+					}
+					$repairs = Repair::where_in('id', $repaire_ids);
 				}else{
-					$repairs = Repair::order_by('created_at', 'desc')->paginate();
+					$repairs = Repair::order_by('created_at', 'desc');
 				}
 			}
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
 		}
+		
 		$message = "You don't have permission.";
 		return View::make('repairs/index', array('repairs'=>$repairs, 'repair_status'=> $repair_status));
 	}

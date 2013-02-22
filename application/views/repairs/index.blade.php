@@ -11,7 +11,8 @@
               <input class="span2" name="text_search" id="" type="text" placeholder="Search by --> ">
               <select class="span2" name="search_by" style="margin:0;">
                     <option value="student_code">Student code</option>
-                    <option value="serial_no">Serial no</option>
+                    <option value="serial_no">Serial no</option>                    
+                    <option value="chemical_status">Status</option>                    
                 </select>
               <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
             </div>
@@ -32,7 +33,14 @@
         			@endif
         		</thead>
         		<tbody>
-	        	@forelse($repairs->results as $repair)
+        		<?php
+        			if(!isset($_GET['text_search'])){
+        				$product_repairs = $repairs->results;
+        			}else{
+        				$product_repairs = $repairs;
+        			}
+        		?>
+	        	@forelse($product_repairs as $repair)
 	        	<tr data-repair-id="{{$repair->id}}">
 	        		<td>
 	        			<?php 
@@ -89,7 +97,9 @@
 	        	@endforelse
         		</tbody>
         	</table>
-        	{{ $repairs->links() }}
+        	@if(!isset($_GET['text_search']))
+        		{{ $repairs->links() }}
+        	@endif
         </div>
     </div>
 </div>
