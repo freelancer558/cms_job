@@ -1,12 +1,14 @@
 @layout('shared/user_header')
 
 @section('content')
-<div class="row do-not-print">
+<div class="row">
     <div class="span2">
-        @include('shared/user_sidebar')
+    	<div class="do-not-print">
+      	@include('shared/user_sidebar')
+      </div>
     </div>
-    <div class="span10 do-not-print">
-    	<form class="navbar-form pull-right" id="search_form" action="/repairs" method="GET">
+    <div class="span10">
+    	<form class="navbar-form pull-right do-not-print" id="search_form" action="/repairs" method="GET">
             <div class="input-prepend input-append">
               <input class="span2" name="text_search" id="" type="text" placeholder="Search by --> ">
               <select class="span2" name="search_by" style="margin:0;">
@@ -24,9 +26,9 @@
         			<th></th>
         			<th>Student Code</th>
         			<th>Serial no</th>
-                    <th>Setup Place</th>
+              <th>Setup Place</th>
         			<th>Repairing Date</th>
-        			<th></th>
+        			<th class="do-not-print"></th>
         			<th>Status</th>
         			@if(Sentry::user()->in_group('superuser'))
         				<th>Fix Cost</th>
@@ -52,7 +54,7 @@
 	        		<td>{{ $product_serial }}</td>
 	        		<td>{{ $repair->setup_place }}</td>
 	        		<td>{{ $repair->date }}</td>
-	        		<td>
+	        		<td class="do-not-print">
 		        		<?php $status = StatusRepair::where_repair_id($repair->id)->first(); ?>
 	        			{{ HTML::link('#', 'Detail', array('class'=>'btn btn-info no-margin', 'style'=>'vertical-align: top;', 'rel' => 'popover', 'data-placement' => 'top',  'data-content' => $repair->detail,  'data-original-title' => 'Details')) }}
 	        			{{ HTML::link('/repairs/'.$repair->product_id.'/tracking', 'Tracking', array('class'=>'btn', 'style'=>'vertical-align: top;')) }}
@@ -65,9 +67,9 @@
 	        		</td>
 	        		<td>
 	        			@if(Sentry::user()->in_group('superuser') && $repair->fix_cost <= 0)
-		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
+		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50', 'class'=>'do-not-print')) }}
 		        		@elseif(Sentry::user()->in_group('teacher') && $repair->fix_cost <= 0)
-		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50')) }}
+		        			{{ Form::select('status', $repair_status, array_search($status->title, $repair_status), array('width'=>'50', 'class'=>'do-not-print')) }}
 		        		@else
 		        			@if($status->title == 'fixed')
 		        				<span class="label label-success">{{$status->title}}</span>
