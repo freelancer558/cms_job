@@ -18,16 +18,16 @@ class Repairs_Controller extends Base_Controller {
 				if($params['search_by'] == "serial_no"){
 					$product = Product::where_serial_no($params['text_search'])->first();
 					if(count($product)>0){
-						$repairs = Repair::where_product_id($product->id);
+						$repairs = Repair::where_product_id($product->id)->get();
 					}else{
-						$repairs = Repair::where_id(0);
+						$repairs = Repair::where_id(0)->get();
 					}
 				}elseif($params['search_by'] == "student_code"){
 					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
 					if(count($user_data)>0){
-						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc');
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->get();
 					}else{
-						$repairs = Repair::where_id(0);	
+						$repairs = Repair::where_id(0)->get();	
 					}
 				}elseif($params['search_by'] == "chemical_status"){
 					$repaire_ids = [];
@@ -35,9 +35,9 @@ class Repairs_Controller extends Base_Controller {
 					foreach($status_repair as $repaire) {
 						array_push($repaire_ids, $repaire->repair_id);
 					}
-					$repairs = Repair::where_in('id', $repaire_ids);
+					$repairs = Repair::where_in('id', $repaire_ids)->get();
 				}else{
-					$repairs = Repair::order_by('created_at', 'desc');
+					$repairs = Repair::order_by('created_at', 'desc')->get();
 				}
 			}
 		}else{
@@ -48,16 +48,16 @@ class Repairs_Controller extends Base_Controller {
 				if($params['search_by'] == "serial_no"){
 					$product = Product::where_serial_no($params['text_search'])->first();
 					if(count($product)>0){
-						$repairs = Repair::where_product_id($product->id);
+						$repairs = Repair::where_product_id($product->id)->get();
 					}else{
-						$repairs = Repair::where_id(0);
+						$repairs = Repair::where_id(0)->get();
 					}
 				}elseif($params['search_by'] == "student_code"){
 					$user_data = UsersMetadata::where_student_code($params['text_search'])->first();
 					if(count($user_data)>0){
-						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc');
+						$repairs = User::find($user_data->user_id)->repairs()->order_by('created_at', 'desc')->get();
 					}else{
-						$repairs = Repair::where_id(0);	
+						$repairs = Repair::where_id(0)->get();	
 					}
 				}elseif($params['search_by'] == "chemical_status"){
 					$repaire_ids = [];
@@ -65,9 +65,9 @@ class Repairs_Controller extends Base_Controller {
 					foreach($status_repair as $repaire) {
 						array_push($repaire_ids, $repaire->repair_id);
 					}
-					$repairs = Repair::where_in('id', $repaire_ids);
+					$repairs = Repair::where_in('id', $repaire_ids)->get();
 				}else{
-					$repairs = Repair::order_by('created_at', 'desc');
+					$repairs = Repair::order_by('created_at', 'desc')->get();
 				}
 			}
 			if(!Sentry::user()->in_group('superuser')) return Redirect::to('/dashboard')->with('status_error', $message);
