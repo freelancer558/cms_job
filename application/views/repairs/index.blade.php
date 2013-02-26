@@ -1,7 +1,7 @@
 @layout('shared/user_header')
 
 @section('content')
-<div class="row">
+<div class="row repaire_page">
     <div class="span2">
     	<div class="do-not-print">
       	@include('shared/user_sidebar')
@@ -17,6 +17,7 @@
                     <option value="chemical_status">Status</option>                    
                 </select>
               <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
+              <button class="btn print_page" type="button"><i class="icon icon-print"></i>Print Page</button>
             </div>
         </form>
         <h1>Product Repairs</h1>
@@ -87,7 +88,7 @@
 	        			<input type="text" name="fix_cost" class="fix_cost" style="width:50px;vertical-align:top;" readonly="true" value="{{$repair->fix_cost}}">
 	        			<input type="text" name="invoice_id" class="invoice_id" style="width:60px;vertical-align:top;" readonly="true" value="{{$repair->invoice_id}}" placeholder="invoice id">
 	        			@if($repair->fix_cost <= 0)
-	        				<a href="#" class="btn add_fix_cost">Add</a>
+	        				<a href="#" class="btn add_fix_cost do-not-print">Add</a>
 	        			@endif
 	        		</td>
 	        		@endif
@@ -135,12 +136,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+	$('.print_page').click(function(){
+		$print = $('.row.print');
+		$print.removeClass('print').addClass('do-not-print');
+		window.print();
+		$print.addClass('print').removeClass('do-not-print');
+	});
+
 	$('.print-btn').click(function(){
 		var name 		= $(this).data('name');
 		var pdate 	= $(this).data('date');
 		var pserial = $(this).data('product-serial');
 		var place 	= $(this).data('place');
 		var pdetail = $(this).data('detail');
+
+		$('.repaire_page').addClass('do-not-print');
 
 		$('.print .print-name').text(name);
 		$('.print .print-date').text(pdate);
@@ -151,6 +161,7 @@ $(document).ready(function(){
 		$('.print').css('display', 'block');
 		window.print();
 		$('.print').css('display', 'none');
+		$('.repaire_page').removeClass('do-not-print');
 	});
 
 	$('.btn.btn-info').popover();
