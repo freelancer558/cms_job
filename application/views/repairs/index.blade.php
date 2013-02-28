@@ -9,17 +9,27 @@
     </div>
     <div class="span10">
     	<form class="navbar-form pull-right do-not-print" id="search_form" action="/repairs" method="GET">
-            <div class="input-prepend input-append">
-              <input class="span2" name="text_search" id="" type="text" placeholder="Search by --> ">
-              <select class="span2" name="search_by" style="margin:0;">
-                    <option value="student_code">Student code</option>
-                    <option value="serial_no">Serial no</option>                    
-                    <option value="chemical_status">Status</option>                    
-                </select>
-              <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
-              <button class="btn print_page" type="button"><i class="icon icon-print"></i>Print Page</button>
-            </div>
-        </form>
+          <div class="input-prepend input-append">
+            <input class="span2" name="text_search" id="" type="text" placeholder="Search by --> ">
+            <select class="span2" name="search_by" style="margin:0;">
+                  <option value="student_code">Student code</option>
+                  <option value="serial_no">Serial no</option>                    
+                  <option value="chemical_status">Status</option>                    
+              </select>
+            <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
+            <button class="btn print_page" type="button"><i class="icon icon-print"></i>Print Page</button>
+          </div>
+      </form>
+      <div class="clearfix"></div>
+      <form class="navbar-form pull-right do-not-print" id="search_form" action="/repairs" method="GET">
+          <div class="input-prepend input-append">
+            <input class="span2" name="start_at" id="" type="text" placeholder="start at  yyyy-mm-dd" value="<?php echo isset($_GET['start_at']) ? $_GET['start_at'] : '';?>">
+            <input class="span2" name="end_at" id="" type="text" placeholder="end at yyyy-mm-dd" value="<?php echo isset($_GET['end_at']) ? $_GET['end_at'] : ''; ?>">
+            <input type="hidden" name="search_by" value="datetime">
+            <input type="hidden" name="text_search" value="datetime">
+            <button class="btn" type="submit"><i class="icon icon-search"></i> Search</button>
+          </div>
+      </form>
         <h1>Product Repairs</h1>
         <div class="well" style="text-align: center">
         	<table class="table table-striped">

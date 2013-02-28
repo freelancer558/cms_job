@@ -36,6 +36,17 @@ class Repairs_Controller extends Base_Controller {
 						array_push($repaire_ids, $repaire->repair_id);
 					}
 					$repairs = Repair::where_in('id', $repaire_ids)->get();
+				}elseif($params['search_by'] == 'datetime'){
+					$repaire_ids = [];
+					$status_repair = $status_repair = DB::query('SELECT * FROM `repairs` WHERE created_at BETWEEN DATE_ADD(DATE(?), INTERVAL -1 DAY)   AND  DATE_ADD(DATE(?), INTERVAL 1 DAY)', array($params['start_at'], $params['end_at']));
+					if(count($status_repair)>0){
+						foreach($status_repair as $repaire) {
+							array_push($repaire_ids, $repaire->id);
+						}
+						$repairs = Repair::where_in('id', $repaire_ids)->get();
+					}else{
+						$repairs = Repair::where_id(0)->get();	
+					}
 				}else{
 					$repairs = Repair::order_by('created_at', 'desc')->get();
 				}
@@ -66,6 +77,17 @@ class Repairs_Controller extends Base_Controller {
 						array_push($repaire_ids, $repaire->repair_id);
 					}
 					$repairs = Repair::where_in('id', $repaire_ids)->get();
+				}elseif($params['search_by'] == 'datetime'){
+					$repaire_ids = [];
+					$status_repair = $status_repair = DB::query('SELECT * FROM `repairs` WHERE created_at BETWEEN DATE_ADD(DATE(?), INTERVAL -1 DAY)   AND  DATE_ADD(DATE(?), INTERVAL 1 DAY)', array($params['start_at'], $params['end_at']));
+					if(count($status_repair)>0){
+						foreach($status_repair as $repaire) {
+							array_push($repaire_ids, $repaire->id);
+						}
+						$repairs = Repair::where_in('id', $repaire_ids)->get();
+					}else{
+						$repairs = Repair::where_id(0)->get();	
+					}
 				}else{
 					$repairs = Repair::order_by('created_at', 'desc')->get();
 				}
