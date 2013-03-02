@@ -5,6 +5,7 @@
       {{ $form->select('chemical_types', 'Chemical Type', $chemical_types, false, array('style'=>'width:220px;')) }}
       {{ $form->text('mfd', 'Date of manufacture') }}
       {{ $form->text('exp', 'Expire Date') }}
+      {{ $form->text('minimum', 'Minimum for notification') }}
       <!-- {{ $form->file('photo', "Photo") }} -->
       {{ $form->submit_primary('Save') }}
 {{ $form->close() }}

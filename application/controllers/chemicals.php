@@ -114,12 +114,14 @@ class Chemicals_Controller extends Base_Controller {
 	      'sum'  	=> (int)$params['sum']*1000,
 	      'mfd' 	=> $params['mfd'],
 	      'exp'  	=> $params['exp'],
+	      'minimum' => $params['minimum'],
 	    );
 	    $rules = array(
 	      'name' 	=> 'required',
 	      'sum'  	=> 'required',
 	      'mfd' 	=> 'required',
 	      'exp'  	=> 'required', 
+	      'minimum' => 'required',
 	    );
 	    $validation = Validator::make($inputs, $rules);
 
