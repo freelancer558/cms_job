@@ -77,16 +77,16 @@ class Chemicals_Controller extends Base_Controller {
 		$params = Input::all();
 		$status_requirement = StatusRequirement::find((int)$params['requisition_id']);
 		$status_requirement->name = 'approved';
+		$status_requirement->save();		
 
 		$requirement = Requirement::find($status_requirement->requirement_id);		
 		$requirement->total = $params['requisition_value'];
 		$requirement->save();
-		$status_requirement->save();		
 
 		$chemical = Chemical::find((int)$params['chemical_id']);
 		$chemical->sum -= $params['requisition_value'];
 		$chemical->save();
-
+		
 		return Redirect::to('/chemicals/management');
 	}
 	public function get_new()
@@ -307,12 +307,14 @@ class Chemicals_Controller extends Base_Controller {
 	      'sum'  	=> $params['sum'],
 	      'mfd' 	=> $params['mfd'],
 	      'exp'  	=> $params['exp'],
+	      'minimum' => $params['minimum'],
 	    );
 	    $rules = array(
 	      'name' 	=> 'required',
 	      'sum'  	=> 'required',
 	      'mfd' 	=> 'required',
 	      'exp'  	=> 'required', 
+	      'minimum'=> 'required',
 	    );
 	    $validation = Validator::make($inputs, $rules);
 
@@ -341,6 +343,7 @@ class Chemicals_Controller extends Base_Controller {
 	      $chemical->sum 	= $inputs['sum'];
 	      $chemical->mfd 	= $inputs['mfd'];
 	      $chemical->exp 	= $inputs['exp'];
+	      $chemical->minimum 	= $inputs['minimum'];
 
 	      // return print_r($inputs);
 	      if ($chemical->save()){

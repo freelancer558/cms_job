@@ -15,6 +15,7 @@
 	      {{ $form->text('mfd', 'Date of manufacture', $chemical->mfd) }}
 	      {{ $form->text('exp', 'Expire Date', $chemical->exp) }}
 	      {{ $form->select('chemical_types', 'Chemical Type', $chemical_types, $chemical->chemicals_chemical_type()->first()->chemical_type_id, array('style'=>'width:220px;')) }}
+          {{ $form->text('minimum', 'Minimum for notification') }}
 	      {{ $form->submit_primary('Update') }}
 		{{ $form->close() }}
 	</script>
