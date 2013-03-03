@@ -5,7 +5,7 @@ class Dashboard_Controller extends Base_Controller
     {
         // $photos = Auth::user()->photos()->order_by('created_at', 'desc')->order_by('id', 'desc')->get();
         // return View::make('dashboard.index', array('photos' => $photos));
-        $chemicals = Chemical::where('exp', '>=', 'DATE_ADD(LAST_DAY(DATE_SUB(NOW(), INTERVAL 1 MONTH)), INTERVAL 1 DAY)', 'AND', 'show', '=', 1)->order_by('exp', 'desc')->paginate();
+        $chemicals = Chemical::where('exp', '<=', 'DATE_ADD( LAST_DAY( DATE_SUB( NOW( ) , INTERVAL 1 MONTH ) ) , INTERVAL 1 DAY )')->where('show', '=', 1)->order_by('exp', 'desc')->paginate();
         // $chemicals = DB::table('chemicals')->where('show', '=', 1)->or_where(function($query){
         //   $query->where('exp', '<', 'NOW()');
         //   $query->where('exp', '>', '(NOW() - INTERVAL 1 MONTH)');
